@@ -1,4 +1,4 @@
-package SelectionSort;
+package Others;
 
 import java.util.ArrayList;
 import java.util.Random;
