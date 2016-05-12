@@ -1,0 +1,691 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE en-export SYSTEM "http://xml.evernote.com/pub/evernote-export3.dtd">
+<en-export export-date="20160512T131950Z" application="Evernote" version="Evernote Mac 6.6.1 (453373)">
+<note><title>Lecture3a_ImplementingSetsUsingArrays</title><content><![CDATA[<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE en-note SYSTEM "http://xml.evernote.com/pub/enml2.dtd">
+<en-note>
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);">How to Implement a Set?</span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">IDEA: Store the elements of the set in an array</span></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);"><span style="font-family: Calibri;">Java Collections Framework Set UML</span></span></span></div>
+<div><en-media type="application/pdf" style="cursor:pointer;" width="100%" height="531" hash="ae5e28b5079d660150979fb56109ed6e"/></div>
+<div><br/></div>
+<div>
+<div style="text-indent:0in;text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override: none;word-break:normal;punctuation-wrap:hanging;">
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);"><span style="font-family: Calibri;">How Did</span> <span style="font-family: Calibri; font-style: italic;">AbstractSet</span><span style="font-family: Calibri; font-style: italic;">&lt;E&gt;</span> <span style="font-family: Calibri;">implement the contains method?</span></span></span></div>
+<ul>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">By invoking the</span> <span style="font-family: Calibri; color: black; font-style: italic;">iterator()</span> <span style="font-family: Calibri; color: black;">method and looping through all the elements by calling its</span> <span style="font-family: Calibri; color: black; font-style: italic;">next()</span> <span style="font-family: Calibri; color: black;">method until the element is found or</span> <span style="font-family: Calibri; color: black; font-style: italic;">hasNext</span><span style="font-family: Calibri; color: black;">() returns false (end of the set)</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Very important to also create a class which implements the</span><span style="font-family: Calibri; color: black; font-style: italic;">Iterator&lt;E&gt;</span><span style="font-family: Calibri; color: black;">interface. Example</span><span style="font-family: Calibri; color: black; font-style: italic;">ArraySet</span><span style="font-family: Calibri; color: black;">encapsulates an inner class called</span><span style="font-family: Calibri; color: black; font-style: italic;">ArrayIterator</span><span style="font-family: Calibri; color: black; font-style: italic;">&lt;E&gt;</span><span style="font-family: Calibri; color: black;">which </span><span style="font-family: Calibri; color: black; font-weight: bold;">implements </span><span style="font-family: Calibri; color: black;">the </span><span style="font-family: Calibri; color: black; font-style: italic;">Iterator </span><span style="font-family: Calibri; color: black;">interface</span></span></li>
+</ul>
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);"><span style="font-family: Cambria;">Implementing iterator() method</span></span></span></div>
+<ul>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Create a class (</span><span style="font-family: Calibri; color: black; font-style: italic;">ArrayIterator</span><span style="font-family: Calibri; color: black;">) which implements the</span> <span style="font-family: Calibri; color: black; font-style: italic;">Iterator </span><span style="font-family: Calibri; color: black;">interface</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Has next method that navigates the array one element at a time and returns the element that the iterator is currently pointing at</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">The</span> <span style="font-family: Calibri; color: black; font-style: italic;">iterator </span><span style="font-family: Calibri; color: black;">method simply returns a instance of this class</span></span></li>
+</ul>
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);"><span style="font-family: Cambria;">size() and clear() methods</span></span></span></div>
+<ul>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">The</span> <span style="font-family: Calibri; color: black; font-style: italic;">size</span> <span style="font-family: Calibri; color: black;">method should simple return the number of elements in the set NOT how big the array is</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">The</span> <span style="font-family: Calibri; color: black; font-style: italic;">clear</span> <span style="font-family: Calibri; color: black;">method needs to reset the number of elements to 0. This could suffice as new adds to the set would simply override the old values. However good practice to set unused array locations to</span> <span style="font-family: Calibri; color: black; font-weight: bold; font-style: italic;">null</span><span style="font-family: Calibri; color: black;">.<span style="mso-spacerun:yes"> </span></span></span></li>
+</ul>
+<div><br/></div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div style="margin-left:40px;"><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New'; font-weight: bold;">public</span> <span style="font-family: 'Courier New'; font-weight: bold;">int</span><span style="font-family: 'Courier New';">size()</span></span></span></div>
+<div style="margin-left:40px;"><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';">{  <span style="mso-tab-count:1"> </span></span> <span style="font-family: 'Courier New'; font-weight: bold;">return</span> <span style="font-family: 'Courier New';">numElements</span><span style="font-family: 'Courier New'; font-weight: bold;">;</span></span></span></div>
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: 'Courier New';">}</span></span></span></div>
+</div>
+</div>
+<div style="margin-left:40px;">
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: 'Courier New';">…</span></span></span></div>
+</div>
+</div>
+<div style="margin-left:40px;"><br/></div>
+<div style="margin-left:40px;">
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New'; font-weight: bold;">public</span> <span style="font-family: 'Courier New'; font-weight: bold;">void</span> <span style="font-family: 'Courier New';">clear()</span></span></span></div>
+<div><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: 'Courier New';">{</span> <span style="font-family: 'Courier New';"><span style="mso-tab-count:1">  </span></span> <span style="font-family: 'Courier New'; font-weight: bold;">for</span> <span style="font-family: 'Courier New';">(</span><span style="font-family: 'Courier New'; font-weight: bold;">int</span> <span style="font-family: 'Courier New';">i</span><span style="font-family: 'Courier New';">=0;</span> <span style="font-family: 'Courier New';">i</span><span style="font-family: 'Courier New';">&lt;</span><span style="font-family: 'Courier New';">numElements</span><span style="font-family: 'Courier New';">;</span> <span style="font-family: 'Courier New';">i</span><span style="font-family: 'Courier New';">++)<span style="mso-tab-count:3"> </span></span></span></span></div>
+<div><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: 'Courier New';">       elements[</span><span style="font-family: 'Courier New';">i</span><span style="font-family: 'Courier New';">] =</span> <span style="font-family: 'Courier New'; font-weight: bold;">null</span><span style="font-family: 'Courier New';">;</span></span></span></div>
+</div>
+</div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1">    </span></span> <span style="font-family: 'Courier New';">numElements</span> <span style="font-family: 'Courier New';">= 0;</span></span></span></div>
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: 'Courier New';">}</span></span></span></div>
+</div>
+</div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);"><span style="font-family: Cambria;">Adding An Element to a Set</span></span></span></div>
+<div><br/></div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: 'Courier New'; font-weight: bold;">public</span> <span style="font-family: 'Courier New'; font-weight: bold;">boolean</span><span style="font-family: 'Courier New';">add(E o)<br/>
+{<span style="mso-tab-count:1"> </span>  Iterator&lt;E&gt; it = iterator();<br/>
+<span style="mso-tab-count:1"> </span></span>     <span style="font-family: 'Courier New'; font-weight: bold;">while</span><span style="font-family: 'Courier New';">(</span><span style="font-family: 'Courier New';">it.hasNext</span><span style="font-family: 'Courier New';">())<br/>
+<span style="mso-tab-count:1"> </span>  {<span style="mso-tab-count:1"> </span>  E element =</span> <span style="font-family: 'Courier New';">it.next</span><span style="font-family: 'Courier New';">();</span></span></span>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:2">      </span></span> <span style="font-family: 'Courier New'; font-weight: bold;">if</span><span style="font-family: 'Courier New';">(</span><span style="font-family: 'Courier New';">element.equals</span><span style="font-family: 'Courier New';">(o</span><span style="font-family: 'Courier New';">)</span><span style="font-family: 'Courier New';">)</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="mso-tab-count:3"><span style="font-family: 'Courier New';">         </span> </span><span style="font-family: 'Courier New';"><span style="font-family: 'Courier New'; font-weight: bold;">return</span>false; <span style="mso-tab-count:1"> </span></span></span></span></div>
+</div>
+</div>
+<div><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1">  </span> }</span></span></span></div>
+<div><br/></div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1">  </span> elements[</span><span style="font-family: 'Courier New';">numElements] = o;</span></span></span>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1"> </span></span>    <span style="font-family: 'Courier New';">numElements++;</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1">  </span></span> <span style="font-family: 'Courier New';"><span style="font-family: 'Courier New'; font-weight: bold;">return</span>true;<span style="mso-tab-count:1"> </span></span></span></span></div>
+</div>
+</div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: 'Courier New';">}</span></span></span></div>
+</div>
+</div>
+<div><b><span style="font-size: 18px;"><span style="font-family: Calibri;"><br/></span></span></b></div>
+<div><b><span style="font-size: 18px;"><span style="font-family: Calibri;">or </span></span><span style="font-size: 18px;"><span style="font-family: Calibri; font-style: italic;">Instead, could replace Iterator code with contains method</span></span></b></div>
+<div><i><b><span style="font-size: 18px;"><span style="font-family: Calibri;"><br/></span></span></b></i></div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;"><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New'; font-weight: bold;">public</span> <span style="font-family: 'Courier New'; font-weight: bold;">boolean</span><span style="font-family: 'Courier New';">add(E o)</span></span></span>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';">{<span style="mso-tab-count:1">  </span></span> <span style="font-family: 'Courier New';"><span style="font-family: 'Courier New'; font-weight: bold;">if</span>(contains(o))</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:2"> </span></span>            <span style="font-family: 'Courier New'; font-weight: bold;">return</span><span style="font-family: 'Courier New';">false;</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count: 1">  </span> elements[</span><span style="font-family: 'Courier New';">numElements] = o;</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);">      <span style="font-family: 'Courier New';">numElements++;</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1">  </span></span> <span style="font-family: 'Courier New'; font-weight: bold;">return</span><span style="font-family: 'Courier New';">true;<span style="mso-tab-count:1"> </span></span></span></span></div>
+</div>
+</div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';">}</span></span></span></div>
+</div>
+</div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="color: rgb(118, 214, 255);"><span style="font-size: 24px;"><span style="font-family: Cambria;">Asymptotic Complexity of add()</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">The order of</span> <span style="font-family: Calibri; color: black; font-style: italic;">contains</span> <span style="font-family: Calibri; color: black;">is</span> <span style="font-family: Calibri; color: black; font-weight: bold;">O(n)</span> <span style="font-family: Calibri; color: black;">therefore the order of</span> <span style="font-family: Calibri; color: black; font-style: italic;">add</span> <span style="font-family: Calibri; color: black;">is</span> <span style="font-family: Calibri; color: black; font-weight: bold;">O(n)</span></span></div>
+<div><span style="font-size: 24px;"><span style="font-family: Cambria;"><span style="color: rgb(91, 155, 213);"><br/></span></span></span></div>
+<div><span style="color: rgb(118, 214, 255);"><span style="font-size: 24px;"><span style="font-family: Cambria;">PROBLEM WITH ARRAY!</span></span></span></div>
+<ul>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Sets should be</span> <span style="font-family: Calibri; color: black; font-style: italic;">dynamic data structures</span> <span style="font-family: Calibri; color: black;">– You can add as many elements as needed without worrying about memory</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Arrays are fixed data structures, their memory has been pre-allocated (</span><span style="font-family: Calibri; color: black;">eg</span><span style="font-family: Calibri; color: black;">for this example</span> <span style="font-family: Calibri; color: black; font-style: italic;">INITIAL_CAPACITY</span><span style="font-family: Calibri; color: black;">of array is 20)</span></span></li>
+</ul>
+<div><span style="font-size: 24px;"><span style="font-family: Cambria;"><span style="color: rgb(118, 214, 255);"><br/></span></span></span></div>
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);"><span style="font-family: Cambria;">expandCapacity</span><span style="font-family: Cambria;">() method</span></span></span></div>
+<ul>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">If the</span> <span style="font-family: Calibri; color: black; font-style: italic;">numElements</span><span style="font-family: Calibri; color: black; font-style: italic;">&gt;=</span> <span style="font-family: Calibri; color: black; font-style: italic;">elements.length</span> <span style="font-family: Calibri; color: black;">(</span><span style="font-family: Calibri; color: black;">ie</span><span style="font-family: Calibri; color: black;">the length of the underlying array), then we need to</span> <u style="text-underline:single"><span style="font-family: Calibri; color: black;">expand the capacity</span></u></span> <span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">of the underlying array and copy all the elements over BEFORE we add the new element.</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Best to expand capacity to be double the size of the previous capacity to avoid this operation happening too often</span></span></li>
+</ul>
+<div><br/></div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New'; font-weight: bold;">public</span> <span style="font-family: 'Courier New'; font-weight: bold;">boolean</span><span style="font-family: 'Courier New';">add(E o)</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';">{   </span><span style="font-family: 'Courier New';"><span style="font-family: 'Courier New'; font-weight: bold;">if</span>(contains(o))</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1">     </span></span>   </span></span> <span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New'; font-weight: bold;">return </span><span style="font-family: 'Courier New';">false;<span style="mso-tab-count:1"> </span></span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count: 1">   </span></span> <span style="font-family: 'Courier New'; font-weight: bold;">if</span><span style="font-family: 'Courier New';">(</span><span style="font-family: 'Courier New';">numElements</span><span style="font-family: 'Courier New';">&gt;=</span> <span style="font-family: 'Courier New';">elements.length)</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:2">      </span></span> <span style="font-family: 'Courier New';">expandCapacity();</span></span></span></div>
+<span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1"> </span>   elements[</span><span style="font-family: 'Courier New';">numElements] = o;</span></span></span>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1"> </span></span>      <span style="font-family: 'Courier New';">numElements++;</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1">   </span></span> <span style="font-family: 'Courier New';"><span style="font-family: 'Courier New'; font-weight: bold;">return </span>true;<span style="mso-tab-count:1"> </span></span></span></span></div>
+</div>
+</div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';">}</span></span></span></div>
+<div><br/></div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New'; font-weight: bold;">private</span> <span style="font-family: 'Courier New'; font-weight: bold;">void</span> <span style="font-family: 'Courier New';">expandCapacity</span><span style="font-family: 'Courier New';">()</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';">{ <span style="mso-tab-count:1"> </span> E</span><span style="font-family: 'Courier New';">[]</span> <span style="font-family: 'Courier New';">largerArray</span> <span style="font-family: 'Courier New';">=</span></span></span><span style="font-size: 18px;"><span style="font-family: 'Courier New';"><span style="color: rgb(255, 47, 146);">(<span style="font-family: 'Courier New';">E[])(</span><span style="font-family: 'Courier New'; font-weight: bold;">new</span><span style="font-family: 'Courier New';">Object[</span><span style="font-family: 'Courier New';">elements.length</span><span style="font-family: 'Courier New';">*2]);</span></span></span></span></div>
+<span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="color: rgb(255, 147, 0);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1">   </span></span> <span style="font-family: 'Courier New';">//</span> <span style="font-family: 'Courier New';">copy the elements array to the</span> <span style="font-family: 'Courier New';">largerArray</span></span></span></span></div>
+</div>
+<div><br/></div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:1">   </span></span> <span style="font-family: 'Courier New'; font-weight: bold;">for</span> <span style="font-family: 'Courier New';">(</span><span style="font-family: 'Courier New'; font-weight: bold;">int</span> <span style="font-family: 'Courier New';">i</span><span style="font-family: 'Courier New';">=0;</span> <span style="font-family: 'Courier New';">i</span><span style="font-family: 'Courier New';">&lt;</span><span style="font-family: 'Courier New';">numElements</span><span style="font-family: 'Courier New';">;</span> <span style="font-family: 'Courier New';">i++)</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';"><span style="mso-tab-count:2"> </span></span>            <span style="font-family: 'Courier New';">largerArray</span><span style="font-family: 'Courier New';">[</span><span style="font-family: 'Courier New';">i</span><span style="font-family: 'Courier New';">] = elements[</span><span style="font-family: 'Courier New';">i</span><span style="font-family: 'Courier New';">];</span></span></span></div>
+</div>
+</div>
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';">   elements</span> <span style="font-family: 'Courier New';">=</span> <span style="font-family: 'Courier New';">largerArray</span><span style="font-family: 'Courier New';">;</span></span></span></div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div><span style="font-size: 18px;"><span style="color: rgb(255, 47, 146);"><span style="font-family: 'Courier New';">}</span></span></span></div>
+</div>
+</div>
+</div>
+</div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="color: rgb(118, 214, 255);"><span style="font-size: 24px;"><span style="font-family: Calibri;">Think:</span></span></span></div>
+<ul>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Why double the underlying array when</span> <span style="font-family: Calibri; color: black;">expandCapacity </span><span style="font-family: Calibri; color: black;">is called? Why not just increase by 1 or some fixed amount?</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Although the memory</span> <span style="font-family: Calibri; color: black;">tradeoff</span><span style="font-family: Calibri; color: black;">is good, this would cause the</span> <span style="font-family: Calibri; color: black; font-style: italic;">add</span><span style="font-family: Calibri; color: black;">method to be slow as each time a new element is added the array needs to expand.<span style="mso-spacerun:yes"> </span> By doubling the array it means that</span> <span style="font-family: Calibri; color: black; font-style: italic;">expandCapacity </span><span style="font-family: Calibri; color: black;">is called less frequently. Every time the array is doubled it is less chance</span> <span style="font-family: Calibri; color: black; font-style: italic;">expandCapacity </span><span style="font-family: Calibri; color: black;">needs to be called again in the near future.</span></span></li>
+</ul>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);"><span style="font-family: Cambria;">Removing an element from Set</span></span></span></div>
+<ul>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Similarly to the</span> <span style="font-family: Calibri; color: black; font-style: italic;">add</span> <span style="font-family: Calibri; color: black;">method the element needs to be checked to see if it is in the set first.<span style="mso-spacerun:yes"> </span> Remember sets do not need to maintain an order in which they were added to the set.</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Naïve approach: call the contains method first.</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Problem is that it only returns a</span> <span style="font-family: Calibri; color: black; font-weight: bold;">boolean </span><span style="font-family: Calibri; color: black;">to indicate that it is in the set, not its location.</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Solution: search for the element and then remove.</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Once removed, replace element with the last element as we do not want gaps in the elements array</span></span></li>
+</ul>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><br/></div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri; font-weight: bold;">public</span> <span style="font-family: Calibri; font-weight: bold;">boolea</span><span style="font-family: Calibri;">n </span><span style="font-family: Calibri;">remove(Object</span> <span style="font-family: Calibri;">o)</span></span></span>
+<div><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">{ <span style="mso-tab-count:1">     </span></span> <span style="color: rgb(255, 147, 0);"><span style="font-family: Calibri;">//</span> <span style="font-family: Calibri;">search for the index of the element o in the</span> <span style="font-family: Calibri;">set</span></span></span></span></div>
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri; font-weight: bold;">int </span><span style="font-family: Calibri;">index =</span> <span style="font-family: Calibri;">0;</span></span></span></div>
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri; font-weight: bold;">boolean </span><span style="font-family: Calibri;">found =</span> <span style="font-family: Calibri;">false;</span></span></span></div>
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri; font-weight: bold;">for</span><span style="font-family: Calibri;">(</span><span style="font-family: Calibri; font-weight: bold;">int</span> <span style="font-family: Calibri;">i</span><span style="font-family: Calibri;">=0;</span> <span style="font-family: Calibri;">i</span><span style="font-family: Calibri;">&lt;</span><span style="font-family: Calibri;">numElements </span><span style="font-family: Calibri;">&amp;&amp; !found;</span> <span style="font-family: Calibri;">i</span><span style="font-family: Calibri;">++)</span></span></span></div>
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">{       </span><span style="font-family: Calibri; font-weight: bold;">if</span> <span style="font-family: Calibri;">((elements[</span><span style="font-family: Calibri;">i</span><span style="font-family: Calibri;">]==</span><span style="font-family: Calibri; font-weight: bold;">null</span> <span style="font-family: Calibri;">&amp;&amp; o==</span><span style="font-family: Calibri; font-weight: bold;">null</span><span style="font-family: Calibri;">) || </span></span><span style="font-size: 18px;"><span style="font-family: Calibri;">(</span><span style="font-family: Calibri;">elements[</span><span style="font-family: Calibri;">i</span><span style="font-family: Calibri;">]!=</span><span style="font-family: Calibri; font-weight: bold;">null</span> <span style="font-family: Calibri;">&amp;&amp; elements[</span><span style="font-family: Calibri;">i</span><span style="font-family: Calibri;">].equals(o</span><span style="font-family: Calibri;">)))</span></span></span></div>
+<div style="margin-left:80px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">{      index</span> <span style="font-family: Calibri;">=</span> <span style="font-family: Calibri;">i</span><span style="font-family: Calibri;">;</span></span></span></div>
+<div style="margin-left:80px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">       found</span> <span style="font-family: Calibri;">= true</span><span style="font-family: Calibri;">;</span></span></span></div>
+<div style="margin-left:80px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">}</span></span></span></div>
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">}</span></span></span></div>
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri; font-weight: bold;">if</span><span style="font-family: Calibri;">(found)</span> <span style="font-family: Calibri;"><span style="mso-tab-count:1"> </span></span></span></span></div>
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">{ <span style="mso-tab-count:1">     </span></span> <span style="color: rgb(255, 147, 0);"><span style="font-family: Calibri;">// replace the element at index by last</span> <span style="font-family: Calibri;">element</span></span></span></span></div>
+<div style="margin-left:80px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">elements[index</span><span style="font-family: Calibri;">] = elements[numElements-1</span><span style="font-family: Calibri;">];</span></span></span></div>
+<div style="margin-left:80px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">elements[numElements-1</span><span style="font-family: Calibri;">] = null;</span></span></span></div>
+<div style="margin-left:80px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">numElements</span><span style="font-family: Calibri;">--;</span></span></span></div>
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">}</span></span></span></div>
+</div>
+</div>
+<div>
+<div style="text-indent:0in; text-align:left;direction:ltr;unicode-bidi:embed;mso-line-break-override:none; word-break:normal;punctuation-wrap:hanging;">
+<div style="margin-left:40px;"><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri; font-weight: bold;">return</span> <span style="font-family: Calibri;">found</span><span style="font-family: Calibri;">;</span></span></span></div>
+<div><span style="color: rgb(255, 47, 146);"><span style="font-size: 18px;"><span style="font-family: Calibri;">}</span></span></span></div>
+</div>
+</div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);"><span style="font-family: Calibri;">What is the order of the</span> <span style="font-family: Calibri; font-style: italic;">r</span><span style="font-family: Calibri; font-style: italic;">emove </span><span style="font-family: Calibri;">method?</span></span></span></div>
+<div><br/></div>
+<div>
+<div style="text-align:left; direction:ltr;unicode-bidi:embed;mso-line-break-override:none;word-break:normal; punctuation-wrap:hanging;">
+<div><span style="font-size: 18px;"><span style="font-family: Calibri; color: black; font-weight: bold;">O(n),</span> <span style="font-family: Calibri; color: black;">Why? Because we have to first navigate on average case</span> <span style="font-family: Calibri; color: black; font-style: italic;">n/2</span> <span style="font-family: Calibri; color: black;">elements in order to find the element in which we need to remove</span></span></div>
+</div>
+</div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="color: rgb(118, 214, 255);"><span style="font-size: 24px;"><span style="font-family: Calibri;">Think!</span></span></span></div>
+<ul>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">What if we use the</span> <span style="font-family: Calibri; color: black; font-style: italic;">contains</span><span style="font-family: Calibri; color: black;">method to check if the input is</span> <span style="font-family: Calibri; color: black;">contained</span> <span style="font-family: Calibri; color: black;">in the</span> <span style="font-family: Calibri; color: black;">set before removal?</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">It would require the program to iterate twice through the elements</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">What if, instead of filling the hole with the last element,</span> <span style="font-family: Calibri; color: black;">we</span> <span style="font-family: Calibri; color: black;">shift all elements behind the hole forward by one</span> <span style="font-family: Calibri; color: black;">cell?</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">This would be severely inefficient especially with many elements in the set</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">What if we</span> <span style="font-family: Calibri; color: black;">do</span> <span style="font-family: Calibri; color: black;">not fill the hole at all</span><span style="font-family: Calibri; color: black;">?</span></span></li>
+<li><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Leaving gaps in an array is a bad idea as it wastes memory and also disrupts the</span> <span style="font-family: Calibri; color: black; font-style: italic;">numElements </span><span style="font-family: Calibri; color: black;">pointer meaning that it no longer would point to the last element in the array.</span></span></li>
+</ul>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);"><span style="font-family: Cambria;">Multiple Threads accessing Set</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: Calibri; color: black; font-style: italic;">ArraySetJumbler </span><span style="font-family: Calibri; color: black;">shows possible</span> <span style="font-family: Calibri; color: black;">errors</span> <span style="font-family: Calibri; color: black;">that can</span> <span style="font-family: Calibri; color: black;">occur when two threads</span> <span style="font-family: Calibri; color: black;">are accessing</span> <span style="font-family: Calibri; color: black;">the</span> <span style="font-family: Calibri; color: black;">same set. This is because threads are accessing, removing and adding elements to the shared array of elements.</span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: Calibri;"><br/></span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: Calibri; color: black; font-weight: bold;">Question</span><span style="font-family: Calibri; color: black;">: What is the term for this problem?</span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: Calibri; color: black; font-weight: bold;">Answer</span><span style="font-family: Calibri; color: black;">:</span> <u style="text-underline:single"><span style="font-family: Calibri; color: black; font-style: italic;">A Race Condition</span></u></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: Calibri;"><br/></span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: Calibri; color: black;">Two ways to make a set (or other collections)</span> <u style="text-underline:single"><span style="font-family: Calibri; color: black;">thread safe</span></u><span style="font-family: Calibri; color: black;">:</span></span></div>
+<div><span style="font-size: 18px; font-family: Calibri; color: black;">1. Use</span> <font face="Calibri"><span style="font-size: 18px;"><b>synchronised </b></span></font><span style="font-size: 18px; font-family: Calibri; color: black;">modifier in defining methods (see</span> <span style="font-size: 18px; font-family: Calibri; color: black; font-style: italic;">SyncArraySet.java</span><span style="font-size: 18px; font-family: Calibri; color: black;">)</span></div>
+<div><span style="font-size: 18px; font-family: Calibri; color: black;">2. The</span> <span style="font-size: 18px; font-family: Calibri; color: black; font-style: italic;">Collections</span><span style="font-size: 18px; font-family: Calibri; color: black;">class has utility methods for synchronizing common data structures.</span><span style="font-size: 18px;"> </span><font face="Calibri"><span style="font-size: 18px;">Eg or Sets:</span></font></div>
+<div><span style="font-size: 18px;"><span style="font-family: 'Courier New';"><br/></span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: 'Courier New'; color: black;">Set&lt;Integer&gt; set =</span> <span style="font-family: 'Courier New'; color: black;">Collections.synchronizedSet</span><span style="font-family: 'Courier New'; color: black;">(</span><span style="font-family: 'Courier New'; color: black; font-weight: bold;">new</span> <span style="font-family: 'Courier New'; color: black;">ArraySet</span><span style="font-family: 'Courier New'; color: black;">&lt;Integer&gt;());</span></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-size: 24px;"><span style="color: rgb(118, 214, 255);"><span style="font-family: Calibri;">What is a Race Condition</span></span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: 'Century Gothic'; color: rgb(64, 64, 64);">Problem with having multiple threads that share resources (variables) is that a</span> <u style="text-underline:single"><span style="font-family: 'Century Gothic'; color: rgb(64, 64, 64); font-weight: bold; font-style: italic;">race condition</span></u> <span style="font-family: 'Century Gothic'; color: rgb(64, 64, 64);">can occur.</span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: 'Century Gothic';"><span style="color: rgb(64, 64, 64);"><br/></span></span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: 'Century Gothic'; color: rgb(64, 64, 64);">A</span> <span style="font-family: 'Century Gothic'; color: rgb(64, 64, 64);">r</span><span style="font-family: 'Century Gothic'; color: rgb(64, 64, 64);">ace condition occurs when one thread may be halfway through changing the state of a variable (or resource or object) when another thread tries to access/modify the same resource concurrently.</span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: 'Century Gothic';"><span style="color: rgb(64, 64, 64);"><br/></span></span></span></div>
+<div><span style="font-size: 18px;"><span style="font-family: 'Century Gothic'; color: rgb(64, 64, 64);">This can cause errors in the program or cause the program to crash!</span></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+<div><span style="font-family: Calibri;"><br/></span></div>
+</div>
+</div>
+</en-note>
+]]></content><created>20160511T080705Z</created><updated>20160511T234615Z</updated><note-attributes><latitude>-36.85314767742121</latitude><longitude>174.7659908500353</longitude><altitude>61.91790390014648</altitude><author>Naomi Wu</author><source>desktop.mac</source><reminder-order>0</reminder-order></note-attributes><resource><data encoding="base64">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
+MzLnopdf1ppUI7U36/T7jowctQ6UCCqLxb7UcDm+XcnZorExeYdnqsyU5wWd3YIVAt/xUaOFKuAWqjOx
+lp9o88MkrgSyCSwyKipUBAJeNZrclhhJjHQxovhCTyiSyTie2L5vKLFIWE+t6Hde1WwWevPKYWL5kRkf
+sWyYKFauPZYi39YkaRLTLJc2sCabNobiIxvf/QpPqdysCmVuZHN0cmVhbQplbmRvYmoKNSAwIG9iagoy
+Nzc1CmVuZG9iagoyIDAgb2JqCjw8IC9UeXBlIC9QYWdlIC9QYXJlbnQgMyAwIFIgL1Jlc291cmNlcyA2
+IDAgUiAvQ29udGVudHMgNCAwIFIgL01lZGlhQm94IFswIDAgNjkzIDM3N10KL1JvdGF0ZSAwIC9Bbm5v
+dHMgMTQgMCBSID4+CmVuZG9iago2IDAgb2JqCjw8IC9Qcm9jU2V0IFsgL1BERiAvVGV4dCAvSW1hZ2VC
+IC9JbWFnZUMgL0ltYWdlSSBdIC9Db2xvclNwYWNlIDw8IC9DczEgNyAwIFIKPj4gL0V4dEdTdGF0ZSA8
+PCAvR3MxIDE2IDAgUiAvR3MyIDE3IDAgUiAvR3M0IDE4IDAgUiAvR3MzIDE5IDAgUiA+PiAvRm9udAo8
+PCAvVFQyIDkgMCBSIC9UVDQgMTEgMCBSID4+IC9YT2JqZWN0IDw8IC9JbTEgMTIgMCBSID4+ID4+CmVu
+ZG9iagoxNCAwIG9iagpbIDE1IDAgUiBdCmVuZG9iagoxMiAwIG9iago8PCAvTGVuZ3RoIDEzIDAgUiAv
+VHlwZSAvWE9iamVjdCAvU3VidHlwZSAvSW1hZ2UgL1dpZHRoIDIwMyAvSGVpZ2h0IDExOSAvSW50ZXJw
+b2xhdGUKdHJ1ZSAvQ29sb3JTcGFjZSAyMCAwIFIgL1NNYXNrIDIxIDAgUiAvQml0c1BlckNvbXBvbmVu
+dCA4IC9GaWx0ZXIgL0ZsYXRlRGVjb2RlCj4+CnN0cmVhbQp4Ae3QgQAAAADDoPlTH+SFUGHAgAEDBgwY
+MGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAED
+BgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDA
+gAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwY
+MGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAED
+BgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDAgAEDBgwYMGDA
+gAEDBgwYuBgYGyYAAQplbmRzdHJlYW0KZW5kb2JqCjEzIDAgb2JqCjMzOAplbmRvYmoKMjEgMCBvYmoK
+PDwgL0xlbmd0aCAyMiAwIFIgL1R5cGUgL1hPYmplY3QgL1N1YnR5cGUgL0ltYWdlIC9XaWR0aCAyMDMg
+L0hlaWdodCAxMTkgL0NvbG9yU3BhY2UKL0RldmljZUdyYXkgL0ludGVycG9sYXRlIHRydWUgL0JpdHNQ
+ZXJDb21wb25lbnQgOCAvRmlsdGVyIC9GbGF0ZURlY29kZSA+PgpzdHJlYW0KeAHtXNmW4joQa4Z9X7r5
+/1+9kqrKWYEQCMTnXD/MNAkkllWlchbr5+f/dm8EJmj/2KbVpm3cObn36zHsMwDT6Ww2m6MtvC3Z4gN3
+YP90ClhjxMQ+kQIiWCzQ8dVqtWbbVJu2Yd9K0IiJkPDjMRDxU4AABAHYbLbb7Q5tb+3gzT5xB/YD4npt
+kAjo63gIg1SACIAgBPX/cDiindDO9caNJ+wEuv2emIQI0TcnP1+iJ8EQCoDY7wlB3b9cLr9of2rX1Owz
+9+AL5zMxCREAgaHlAgH3eTjKDLCxFBdEIQxEgP5a39lxdrvShCb2E5IQARAY2gjOR9nxqCIMBpRQAIRh
+UP816OykRRPDjU2fGXTGWvwAiPBdElTA+USsEYfTgZgCjLMzYRjUf08FpDlzvNqY+0gUASMm0ni9kr8L
+4BwFh7E2dKhZXDGsKjCsI4x9S+akUNReSm80aTHlWRLnyQVAkVaCY+QEmkFUWnk+mweO1IEUHogPEyRq
+rEoiy2GtsVJG3XHJA0cQi8BjcBBq4MZE+t1oSAgCC/mBsOKJEVBgA1EBLpS0yFpVPi/mKudW0DEI3jRx
+wVxG0wFiYiGihlP9EpxAAxmwQHsnGMuQ5WqzLXBQfgTDpFRaGsX7UfUmMs3QMD3wouQK4oMkNPvdZi1q
+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
+ewRDQxL5+BANhqnnONVH1+mQA0phgKK1/m+q0gkM3QjcKIKBVhhgcYnxa3DIBgtIMnIpnG8wbhi2dxU1
+gUHOQM2KU8gjiHZrirX+9BgKwTDDMfjrYMQ8muEU8uaC5mBqlkfheEQ4cjxyt8KODAUIkEE2WmyCKP/v
+t5FQBCAApI/Jx0eJU/KhgrtfxVOyCQr956ForUlvSplRhRcVragUwZaQJGQgo5WghjZnMsCColGhqQPm
+qyVLquQpKVQ0lkwNVlpy0wIC8wijL6UcqOio5cZQCUcipDkgdcV4/nNQg0ArW0YJjvAkA0Y4FsquDaZm
+1Sb/NuwsjNtgsVf4ttnASFJC7p/vZsdfGDXm4yMDrBhL4ikZMMpFDzZzbGEIap9orSc/PbPTc1NE1azC
+byxwDEFIgZSxXtHNFOJ093NENDekpyGtMstN27BPLodwcZSxo0dp2KYNVH4LBOW/hKYEh/SkKKGppCUR
+jTLVZAkaH2hDif3ynnTk5ieIQuXS/nqhKvf24d/KG9dRmeHJDY+AGDKps+aWWf3XgOJ7ss+EYshPkE58
+mg31nmY97POdLzgcFml3aHVPSQshwSIZJKJCkYWfOTuWXVrfOA260+1buyLYgMfsCuU5K9NcJYmyI/2j
+TWatKT2gNau8ZvtPF251rN92wIEUFDXPrYAluCZbxb+UMzppujflyByNHb8ACZHKuKqgPJrDC1S9T96a
+5sr88ky03+B3/JVB4tSETpn1xs1ulT1s0ejY22e+RmTRnvldj+/+B4n48lAKZW5kc3RyZWFtCmVuZG9i
+agoyMiAwIG9iagoyODc5CmVuZG9iagoxNiAwIG9iago8PCAvVHlwZSAvRXh0R1N0YXRlIC9jYSAwID4+
+CmVuZG9iagoxNyAwIG9iago8PCAvVHlwZSAvRXh0R1N0YXRlIC9BQVBMOkFBIGZhbHNlID4+CmVuZG9i
+agoxOCAwIG9iago8PCAvVHlwZSAvRXh0R1N0YXRlIC9BQVBMOkFBIHRydWUgPj4KZW5kb2JqCjE5IDAg
+b2JqCjw8IC9UeXBlIC9FeHRHU3RhdGUgL2NhIDEgPj4KZW5kb2JqCjIzIDAgb2JqCjw8IC9MZW5ndGgg
+MjQgMCBSIC9OIDMgL0FsdGVybmF0ZSAvRGV2aWNlUkdCIC9GaWx0ZXIgL0ZsYXRlRGVjb2RlID4+CnN0
+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
+dHJlYW0KZW5kb2JqCjI2IDAgb2JqCjI2MTUKZW5kb2JqCjIwIDAgb2JqClsgL0lDQ0Jhc2VkIDI1IDAg
+UiBdCmVuZG9iagozIDAgb2JqCjw8IC9UeXBlIC9QYWdlcyAvTWVkaWFCb3ggWzAgMCA2MTIgNzkyXSAv
+Q291bnQgMSAvS2lkcyBbIDIgMCBSIF0gPj4KZW5kb2JqCjI3IDAgb2JqCjw8IC9UeXBlIC9DYXRhbG9n
+IC9QYWdlcyAzIDAgUiAvVmVyc2lvbiAvMS40ID4+CmVuZG9iagoxNSAwIG9iago8PCAvVHlwZSAvQW5u
+b3QgL0FQIDI4IDAgUiAvUmVjdCBbIDMxNi45MzI2IDI2MS4xNTI4IDMyOS4wNTUgMjk1LjE1MTkgXSAv
+Q29udGVudHMKKCkgL0FBUEw6QUtFeHRyYXMgMjkgMCBSIC9EQSAoLy5BcHBsZVN5c3RlbVVJRm9udCAx
+MyBUZiAwIGcpIC9GIDQgL1N1YnR5cGUKL0ZyZWVUZXh0ID4+CmVuZG9iagoyOSAwIG9iago8PCAvQUFQ
+TDpBS1BERkFubm90YXRpb25EaWN0aW9uYXJ5IDMwIDAgUiAvQUFQTDpBS0Fubm90YXRpb25PYmplY3Qg
+KFluQnNhWE4wTUREVUFRSURCQVVHam85WUpIWmxjbk5wYjI1WUpHOWlhbVZqZEhOWkpHRnlZMmhwZG1W
+eVZDUjBiM0FTQUFHR29LOFFIUWNJS0RZM09EazZPenc5UGtWUFVGRlNXMkZsYVcxdmRIZC9nSU9GVlNS
+dWRXeHMzeEFRQ1FvTERBME9EeEFSRWhNVUZSWVhHQmtaR3h3ZEd4OGdJU0lqR3hzZkd5ZGZFQkZ6ZEhK
+dmEyVkRiMnh2Y2xOMGNtbHVaMThRRDJacGJHeERiMnh2Y2xOMGNtbHVaMThRRVhSbGVIUkpjMFpwZUdW
+a1NHVnBaMmgwWHhBY2IzSnBaMmx1WVd4TmIyUmxiRUpoYzJWVFkyRnNaVVpoWTNSdmNscGljblZ6YUZO
+MGVXeGxXV2hoYzFOb1lXUnZkMTF5YjNSaGRHbHZia0Z1WjJ4bFh4QVFkSGx3YVc1blFYUjBjbWxpZFhS
+bGMxWWtZMnhoYzNOWmNtVmpkR0Z1WjJ4bFh4QVljMmh2ZFd4a1ZYTmxVR3hoWTJWb2IyeGtaWEpVWlho
+MFhYUmxlSFJKYzBOc2FYQndaV1JmRUJCMFpYaDBTWE5HYVhobFpGZHBaSFJvVzNOMGNtOXJaVmRwWkhS
+b1ZtUmhjMmhsWkY4UUYyOXlhV2RwYm1Gc1JYaHBaazl5YVdWdWRHRjBhVzl1Z0FDQUFBZ2pQKy8rTWsx
+YTBvRVFBQWdqQUFBQUFBQUFBQUNBRElBY2dBSUpDQWdJRUFIVEtTb1JLekExVjA1VExtdGxlWE5hVGxN
+dWIySnFaV04wYzZRc0xTNHZnQU9BQklBRmdBYWtNVEl6TklBSGdBaUFDWUFLZ0F0VlYybGtkR2hXU0dW
+cFoyaDBVVmxSV0NOQUpENnVVQXdsUUNOQVAvL0dTYXRhVUNOQWNHSnh2NVZibVNOQWM5N3I2NGk3dWRJ
+L1FFRkNXaVJqYkdGemMyNWhiV1ZZSkdOc1lYTnpaWE5mRUJOT1UwMTFkR0ZpYkdWRWFXTjBhVzl1WVhK
+NW8wRkRSRnhPVTBScFkzUnBiMjVoY25sWVRsTlBZbXBsWTNUVEtTb1JSa3BPbzBkSVNZQU5nQTZBRDZO
+TFRFMkFFSUFXZ0JpQUcxZE9VME52Ykc5eVh4QVFUbE5RWVhKaFozSmhjR2hUZEhsc1pWWk9VMFp2Ym5U
+VlUxUlZWaEZYV0NkWldseE9VME52YlhCdmJtVnVkSE5WVGxOU1IwSmNUbE5EYjJ4dmNsTndZV05sWHhB
+U1RsTkRkWE4wYjIxRGIyeHZjbE53WVdObFJ6QWdNQ0F3SURGR01DQXdJREFBZ0JHQUZkTmNYUkZlWDJC
+VVRsTkpSRlZPVTBsRFF4QUhnQktBRk5KaUVXTmtWMDVUTG1SaGRHRlBFUXhJQUFBTVNFeHBibThDRUFB
+QWJXNTBjbEpIUWlCWVdWb2dCODRBQWdBSkFBWUFNUUFBWVdOemNFMVRSbFFBQUFBQVNVVkRJSE5TUjBJ
+QUFBQUFBQUFBQUFBQUFBQUFBUGJXQUFFQUFBQUEweTFJVUNBZ0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQVJZM0J5ZEFBQUFWQUFBQUF6WkdW
+ell3QUFBWVFBQUFCc2QzUndkQUFBQWZBQUFBQVVZbXR3ZEFBQUFnUUFBQUFVY2xoWldnQUFBaGdBQUFB
+VVoxaFpXZ0FBQWl3QUFBQVVZbGhaV2dBQUFrQUFBQUFVWkcxdVpBQUFBbFFBQUFCd1pHMWtaQUFBQXNR
+QUFBQ0lkblZsWkFBQUEwd0FBQUNHZG1sbGR3QUFBOVFBQUFBa2JIVnRhUUFBQS9nQUFBQVViV1ZoY3dB
+QUJBd0FBQUFrZEdWamFBQUFCREFBQUFBTWNsUlNRd0FBQkR3QUFBZ01aMVJTUXdBQUJEd0FBQWdNWWxS
+U1F3QUFCRHdBQUFnTWRHVjRkQUFBQUFCRGIzQjVjbWxuYUhRZ0tHTXBJREU1T1RnZ1NHVjNiR1YwZEMx
+UVlXTnJZWEprSUVOdmJYQmhibmtBQUdSbGMyTUFBQUFBQUFBQUVuTlNSMElnU1VWRE5qRTVOall0TWk0
+eEFBQUFBQUFBQUFBQUFBQVNjMUpIUWlCSlJVTTJNVGsyTmkweUxqRUFBQUFBQUFBQUFBQUFBQUFBQUFB
+QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUZoWldpQUFBQUFBQUFE
+elVRQUJBQUFBQVJiTVdGbGFJQUFBQUFBQUFBQUFBQUFBQUFBQUFBQllXVm9nQUFBQUFBQUFiNklBQURq
+MUFBQURrRmhaV2lBQUFBQUFBQUJpbVFBQXQ0VUFBQmphV0ZsYUlBQUFBQUFBQUNTZ0FBQVBoQUFBdHM5
+a1pYTmpBQUFBQUFBQUFCWkpSVU1nYUhSMGNEb3ZMM2QzZHk1cFpXTXVZMmdBQUFBQUFBQUFBQUFBQUJa
+SlJVTWdhSFIwY0RvdkwzZDNkeTVwWldNdVkyZ0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFB
+QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFaR1Z6WXdBQUFBQUFBQUF1U1VWRElEWXhPVFkyTFRJ
+dU1TQkVaV1poZFd4MElGSkhRaUJqYjJ4dmRYSWdjM0JoWTJVZ0xTQnpVa2RDQUFBQUFBQUFBQUFBQUFB
+dVNVVkRJRFl4T1RZMkxUSXVNU0JFWldaaGRXeDBJRkpIUWlCamIyeHZkWElnYzNCaFkyVWdMU0J6VWtk
+Q0FBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBR1JsYzJNQUFBQUFBQUFBTEZKbFptVnlaVzVqWlNC
+V2FXVjNhVzVuSUVOdmJtUnBkR2x2YmlCcGJpQkpSVU0yTVRrMk5pMHlMakVBQUFBQUFBQUFBQUFBQUN4
+U1pXWmxjbVZ1WTJVZ1ZtbGxkMmx1WnlCRGIyNWthWFJwYjI0Z2FXNGdTVVZETmpFNU5qWXRNaTR4QUFB
+QUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUIyYVdWM0FBQUFBQUFUcFA0QUZGOHVBQkRQRkFB
+RDdjd0FCQk1MQUFOY25nQUFBQUZZV1ZvZ0FBQUFBQUJNQ1ZZQVVBQUFBRmNmNTIxbFlYTUFBQUFBQUFB
+QUFRQUFBQUFBQUFBQUFBQUFBQUFBQUFBQUFBS1BBQUFBQW5OcFp5QUFBQUFBUTFKVUlHTjFjbllBQUFB
+QUFBQUVBQUFBQUFVQUNnQVBBQlFBR1FBZUFDTUFLQUF0QURJQU53QTdBRUFBUlFCS0FFOEFWQUJaQUY0
+QVl3Qm9BRzBBY2dCM0FId0FnUUNHQUlzQWtBQ1ZBSm9BbndDa0FLa0FyZ0N5QUxjQXZBREJBTVlBeXdE
+UUFOVUEyd0RnQU9VQTZ3RHdBUFlBK3dFQkFRY0JEUUVUQVJrQkh3RWxBU3NCTWdFNEFUNEJSUUZNQVZJ
+QldRRmdBV2NCYmdGMUFYd0Jnd0dMQVpJQm1nR2hBYWtCc1FHNUFjRUJ5UUhSQWRrQjRRSHBBZklCK2dJ
+REFnd0NGQUlkQWlZQ0x3STRBa0VDU3dKVUFsMENad0p4QW5vQ2hBS09BcGdDb2dLc0FyWUN3UUxMQXRV
+QzRBTHJBdlVEQUFNTEF4WURJUU10QXpnRFF3TlBBMW9EWmdOeUEzNERpZ09XQTZJRHJnTzZBOGNEMHdQ
+Z0Erd0QrUVFHQkJNRUlBUXRCRHNFU0FSVkJHTUVjUVIrQkl3RW1nU29CTFlFeEFUVEJPRUU4QVQrQlEw
+RkhBVXJCVG9GU1FWWUJXY0Zkd1dHQlpZRnBnVzFCY1VGMVFYbEJmWUdCZ1lXQmljR053WklCbGtHYWda
+N0Jvd0duUWF2QnNBRzBRYmpCdlVIQndjWkJ5c0hQUWRQQjJFSGRBZUdCNWtIckFlL0I5SUg1UWY0Q0Fz
+SUh3Z3lDRVlJV2dodUNJSUlsZ2lxQ0w0STBnam5DUHNKRUFrbENUb0pUd2xrQ1hrSmp3bWtDYm9Kendu
+bENmc0tFUW9uQ2owS1ZBcHFDb0VLbUFxdUNzVUszQXJ6Q3dzTElnczVDMUVMYVF1QUM1Z0xzQXZJQytF
+TCtRd1NEQ29NUXd4Y0RIVU1qZ3luRE1BTTJRenpEUTBOSmcxQURWb05kQTJPRGFrTnd3M2VEZmdPRXc0
+dURra09aQTUvRHBzT3RnN1NEdTRQQ1E4bEQwRVBYZzk2RDVZUHN3L1BEK3dRQ1JBbUVFTVFZUkIrRUpz
+UXVSRFhFUFVSRXhFeEVVOFJiUkdNRWFvUnlSSG9FZ2NTSmhKRkVtUVNoQktqRXNNUzR4TURFeU1UUXhO
+akU0TVRwQlBGRStVVUJoUW5GRWtVYWhTTEZLMFV6aFR3RlJJVk5CVldGWGdWbXhXOUZlQVdBeFltRmtr
+V2JCYVBGcklXMWhiNkZ4MFhRUmRsRjRrWHJoZlNGL2NZR3hoQUdHVVlpaGl2R05VWStoa2dHVVVaYXht
+UkdiY1ozUm9FR2lvYVVScDNHcDRheFJyc0d4UWJPeHRqRzRvYnNodmFIQUljS2h4U0hIc2NveHpNSFBV
+ZEhoMUhIWEFkbVIzREhld2VGaDVBSG1vZWxCNitIdWtmRXg4K0gya2ZsQisvSCtvZ0ZTQkJJR3dnbUNE
+RUlQQWhIQ0ZJSVhVaG9TSE9JZnNpSnlKVklvSWlyeUxkSXdvak9DTm1JNVFqd2lQd0pCOGtUU1I4Sktz
+azJpVUpKVGdsYUNXWEpjY2w5eVluSmxjbWh5YTNKdWduR0NkSkozb25xeWZjS0Ewb1B5aHhLS0lvMUNr
+R0tUZ3BheW1kS2RBcUFpbzFLbWdxbXlyUEt3SXJOaXRwSzUwcjBTd0ZMRGtzYml5aUxOY3REQzFCTFhZ
+dHF5M2hMaFl1VEM2Q0xyY3U3aThrTDFvdmtTL0hMLzR3TlRCc01LUXcyekVTTVVveGdqRzZNZkl5S2pK
+ak1wc3kxRE1OTTBZemZ6TzRNL0UwS3pSbE5KNDAyRFVUTlUwMWh6WENOZjAyTnpaeU5xNDI2VGNrTjJB
+M25EZlhPQlE0VURpTU9NZzVCVGxDT1g4NXZEbjVPalk2ZERxeU91ODdMVHRyTzZvNzZEd25QR1U4cER6
+alBTSTlZVDJoUGVBK0lENWdQcUErNEQ4aFAyRS9vai9pUUNOQVpFQ21RT2RCS1VGcVFheEI3a0l3UW5K
+Q3RVTDNRenBEZlVQQVJBTkVSMFNLUk01RkVrVlZSWnBGM2tZaVJtZEdxMGJ3UnpWSGUwZkFTQVZJUzBp
+UlNOZEpIVWxqU2FsSjhFbzNTbjFLeEVzTVMxTkxta3ZpVENwTWNreTZUUUpOU2syVFRkeE9KVTV1VHJk
+UEFFOUpUNU5QM1ZBblVIRlF1MUVHVVZCUm0xSG1VakZTZkZMSFV4TlRYMU9xVS9aVVFsU1BWTnRWS0ZW
+MVZjSldEMVpjVnFsVzkxZEVWNUpYNEZndldIMVl5MWthV1dsWnVGb0hXbFphcGxyMVcwVmJsVnZsWERW
+Y2hseldYU2RkZUYzSlhocGViRjY5WHc5ZllWK3pZQVZnVjJDcVlQeGhUMkdpWWZWaVNXS2NZdkJqUTJP
+WFkrdGtRR1NVWk9sbFBXV1NaZWRtUFdhU1p1aG5QV2VUWitsb1AyaVdhT3hwUTJtYWFmRnFTR3FmYXZk
+clQydW5hLzlzVjJ5dmJRaHRZRzI1YmhKdWEyN0VieDV2ZUcvUmNDdHdobkRnY1RweGxYSHdja3R5cG5N
+QmMxMXp1SFFVZEhCMHpIVW9kWVYxNFhZK2RwdDIrSGRXZDdONEVYaHVlTXg1S25tSmVlZDZSbnFsZXdS
+N1kzdkNmQ0Y4Z1h6aGZVRjlvWDRCZm1KK3duOGpmNFIvNVlCSGdLaUJDb0ZyZ2MyQ01JS1NndlNEVjRP
+NmhCMkVnSVRqaFVlRnE0WU9obktHMTRjN2g1K0lCSWhwaU02Sk00bVppZjZLWklyS2l6Q0xsb3Y4akdP
+TXlvMHhqWmlOLzQ1bWpzNlBObytla0FhUWJwRFdrVCtScUpJUmtucVM0NU5OazdhVUlKU0tsUFNWWDVY
+SmxqU1duNWNLbDNXWDRKaE1tTGlaSkptUW1meWFhSnJWbTBLYnI1d2NuSW1jOTUxa25kS2VRSjZ1bngy
+Zmk1LzZvR21nMktGSG9iYWlKcUtXb3dhamRxUG1wRmFreDZVNHBhbW1HcWFMcHYybmJxZmdxRktveEtr
+M3FhbXFIS3FQcXdLcmRhdnByRnlzMEsxRXJiaXVMYTZocnhhdmk3QUFzSFd3NnJGZ3NkYXlTN0xDc3pp
+enJyUWx0SnkxRTdXS3RnRzJlYmJ3dDJpMzRMaFp1Tkc1U3JuQ3VqdTZ0YnN1dTZlOElieWJ2Ulc5ajc0
+S3ZvUysvNzk2di9YQWNNRHN3V2ZCNDhKZnd0dkRXTVBVeEZIRXpzVkx4Y2pHUnNiRHgwSEh2OGc5eUx6
+Sk9zbTV5ampLdDhzMnk3Yk1OY3kxelRYTnRjNDJ6cmJQTjgrNDBEblF1dEU4MGI3U1A5TEIwMFRUeHRS
+SjFNdlZUdFhSMWxYVzJOZGMxK0RZWk5qbzJXelo4ZHAyMnZ2YmdOd0YzSXJkRU4yVzNoemVvdDhwMzYv
+Z051Qzk0VVRoek9KVDR0dmpZK1ByNUhQay9PV0U1ZzNtbHVjZjU2bm9NdWk4NlVicDBPcGI2dVhyY092
+NzdJYnRFZTJjN2lqdXRPOUE3OHp3V1BEbDhYTHgvL0tNOHhuenAvUTA5TUwxVVBYZTltMzIrL2VLK0Ju
+NHFQazQrY2Y2Vi9ybiszZjhCL3lZL1NuOXV2NUwvdHovYmYvL2dCUFNQMEJtWjExT1UwMTFkR0ZpYkdW
+RVlYUmhvMlpvUkZaT1UwUmhkR0hTUDBCcWExeE9VME52Ykc5eVUzQmhZMldpYkVSY1RsTkRiMnh2Y2xO
+d1lXTmwwajlBVDI2aVQwVFRjQkZ4SjNJWlh4QWZUbE5CYkd4dmQzTlVhV2RvZEdWdWFXNW5SbTl5VkhK
+MWJtTmhkR2x2YmxwT1UxUmhZbE4wYjNCemdCZUFBTkkvUUhWMlh4QVhUbE5OZFhSaFlteGxVR0Z5WVdk
+eVlYQm9VM1I1YkdXamRWQkUxSGg1ZWhGN2ZIMStWazVUVTJsNlpWaE9VMlpHYkdGbmMxWk9VMDVoYldV
+alFEZVQza0oyNTRJUUVJQVpnQnBaU0dWc2RtVjBhV05oMGo5QWdZSldUbE5HYjI1MG9vRkUwajlBUTRT
+aVEwVFNQMENHaDE4UUYwRkxSbTl5YlZSbGVIUkNiM2hCYm01dmRHRjBhVzl1cDRpSmlvdU1qVVJmRUJk
+QlMwWnZjbTFVWlhoMFFtOTRRVzV1YjNSaGRHbHZibDhRRTBGTFZHVjRkRUp2ZUVGdWJtOTBZWFJwYjI1
+ZkVCeEJTMUpsWTNSaGJtZDFiR0Z5VTJoaGNHVkJibTV2ZEdGMGFXOXVYeEFSUVV0VGFHRndaVUZ1Ym05
+MFlYUnBiMjVmRUJOQlMxTjBjbTlyWldSQmJtNXZkR0YwYVc5dVhFRkxRVzV1YjNSaGRHbHZibDhRRDA1
+VFMyVjVaV1JCY21Ob2FYWmxjdEdRa1ZSeWIyOTBnQUVBQ0FBUkFCb0FJd0F0QURJQU53QlhBRjBBZ0FD
+VUFLWUF1Z0RaQU9RQTdnRDhBUThCRmdFZ0FUc0JTUUZjQVdnQmJ3R0pBWXNCalFHT0FaY0JtUUdhQWFN
+QnBRR25BYWtCcWdHckFhd0JyUUd2QWJZQnZnSEpBYzRCMEFIU0FkUUIxZ0hiQWQwQjN3SGhBZU1CNVFI
+ckFmSUI5QUgyQWY4Q0NBSVJBaG9DSHdJcUFqTUNTUUpOQWxvQ1l3SnFBbTRDY0FKeUFuUUNlQUo2QW53
+Q2ZnS0FBb2dDbXdLaUFxMEN1Z0xBQXMwQzRnTHFBdkVDOHdMMUF2d0RBUU1IQXdrREN3TU5BeElER2c5
+bUQyZ1BiUTk3RDM4UGhnK0xENWdQbXcrb0Q2MFBzQSszRDlrUDVBL21EK2dQN1JBSEVBc1FGQkFiRUNR
+UUt4QTBFRFlRT0JBNkVFUVFTUkJRRUZNUVdCQmJFR0FRZWhDQ0VKd1FzaERSRU9VUSt4RUlFUm9SSFJF
+aUFBQUFBQUFBQWdFQUFBQUFBQUFBa2dBQUFBQUFBQUFBQUFBQUFBQUFFU1E9KQo+PgplbmRvYmoKMzAg
+MCBvYmoKPDwgL1R5cGUgL0Fubm90IC9BUCAyOCAwIFIgL1JlY3QgWyAzMTYuOTMyNiAyNjEuMTUyOCAz
+MjkuMDU1IDI5NS4xNTE5IF0gL0NvbnRlbnRzCigpIC9EQSAoLy5BcHBsZVN5c3RlbVVJRm9udCAxMyBU
+ZiAwIGcpIC9GIDQgL1N1YnR5cGUgL0ZyZWVUZXh0ID4+CmVuZG9iagoyOCAwIG9iago8PCAvTiAzMSAw
+IFIgPj4KZW5kb2JqCjMxIDAgb2JqCjw8IC9MZW5ndGggMzIgMCBSIC9GaWx0ZXIgL0ZsYXRlRGVjb2Rl
+IC9UeXBlIC9YT2JqZWN0IC9TdWJ0eXBlIC9Gb3JtIC9Gb3JtVHlwZQoxIC9CQm94IFswIDAgMCAwXSAv
+UmVzb3VyY2VzIDMzIDAgUiA+PgpzdHJlYW0KeAErVAgEAAHnAOMKZW5kc3RyZWFtCmVuZG9iagozMiAw
+IG9iagoxMQplbmRvYmoKMzMgMCBvYmoKPDwgL1Byb2NTZXQgWyAvUERGIF0gPj4KZW5kb2JqCjkgMCBv
+YmoKPDwgL1R5cGUgL0ZvbnQgL1N1YnR5cGUgL1RydWVUeXBlIC9CYXNlRm9udCAvRFNLQ0hRK0NhbGli
+cmktQm9sZCAvRm9udERlc2NyaXB0b3IKMzQgMCBSIC9Ub1VuaWNvZGUgMzUgMCBSIC9GaXJzdENoYXIg
+MzMgL0xhc3RDaGFyIDU0IC9XaWR0aHMgWyA0OTggMjQ2IDUzNwozNDcgNTAzIDM1NSAzMTYgNDk0IDQx
+OCA0OTggNDczIDUyOSA1MzggMjQ2IDUzNyAzOTkgNjA2IDUzNyA0NzQgNjMxIDUzNyA0OTUKXSA+Pgpl
+bmRvYmoKMzUgMCBvYmoKPDwgL0xlbmd0aCAzNiAwIFIgL0ZpbHRlciAvRmxhdGVEZWNvZGUgPj4Kc3Ry
+ZWFtCngBXZLLasMwEEX3/got00WwbMV5gDGElIAXfVC3H2BL4yCoZSE7C/997yhpCl2cxdHMSDOS0lP9
+XDs7i/Q9jLqhWfTWmUDTeA2aREcX65IsF8bq+W5xTQ+tT1IUN8s001C7fhRlmQiRfqBkmsMiVkczdvTE
+a2/BULDuIlZfpyauNFfvv2kgNwuZVJUw1GO7l9a/tgOJNJaua4O4nZc1qv4yPhdPAh2hIru1pEdDk281
+hdZdKCmlrMrzuUrImX+hPL9VdP09Nc+qkpFS6Sop8xwKpNweWBUUQIl1AwVS7jasBRQgWrBuoQDRnHUH
+BYhuWfdQAM1YD1AAVawtFKCNeFAHBVIWMaqhQMpNVAMFqO25lqAAGkfooQDKbSjcBYOuuFZhVgZbcRsK
+szJI5okUZmWQzOMrzMogec+KWRkkR8WsKs5boBZ3/XupfO38PR7Pqa8h4CXjH4qPzI9nHT2+mR89bxD5
+AdGGs7QKZW5kc3RyZWFtCmVuZG9iagozNiAwIG9iagozNjEKZW5kb2JqCjM0IDAgb2JqCjw8IC9UeXBl
+IC9Gb250RGVzY3JpcHRvciAvRm9udE5hbWUgL0RTS0NIUStDYWxpYnJpLUJvbGQgL0ZsYWdzIDQgL0Zv
+bnRCQm94ClstNTE5IC0zMDYgMTI0MCAxMDM5XSAvSXRhbGljQW5nbGUgMCAvQXNjZW50IDk1MiAvRGVz
+Y2VudCAtMjY5IC9DYXBIZWlnaHQKODQ2IC9TdGVtViAwIC9YSGVpZ2h0IDYzNSAvTWF4V2lkdGggMTMy
+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
+CB+h9Lwhj3F6gtLReMFhgRqOzb+Kpww8QzzvD5Wjdcc0iYQtYDUQ2BEu0FgVtbNU4WphheYcMaRnGgzB
+00QSuJBSZVtKfUnKYFgEonqTNouY2YyW0DoaKTLpSVkF3pJ/u4xnIKk3cRDoDXizTbIZYOFuGjcFnEiH
+nsQ4jJJ1hBQrCndR8jcspnwnoQb6fuLRJ/BIX3v3pnD7xOytk/tvrWmbm5U/gP8DNh61qAplbmRzdHJl
+YW0KZW5kb2JqCjM4IDAgb2JqCjI3NzAKZW5kb2JqCjExIDAgb2JqCjw8IC9UeXBlIC9Gb250IC9TdWJ0
+eXBlIC9UcnVlVHlwZSAvQmFzZUZvbnQgL1RPVlZMQytDYWxpYnJpIC9Gb250RGVzY3JpcHRvcgozOSAw
+IFIgL1RvVW5pY29kZSA0MCAwIFIgL0ZpcnN0Q2hhciAzMyAvTGFzdENoYXIgMzQgL1dpZHRocyBbIDY5
+MCAyNTIgXSA+PgplbmRvYmoKNDAgMCBvYmoKPDwgL0xlbmd0aCA0MSAwIFIgL0ZpbHRlciAvRmxhdGVE
+ZWNvZGUgPj4Kc3RyZWFtCngBXZCxbsMgEIZ3nuLGZIjADJ0QUpUqkoemVd0+AIazhVQDwnjw2/cgaSp1
++Ie7+7/j5/i5f+mDL8Dfc7QDFph8cBnXuGWLMOLsA+skOG/LvWo9u5jEOMHDvhZc+jBFUIoB8A9C1pJ3
+ODy7OOKx9t6yw+zDDIev89A6w5bSNy4YCgimNTicaN2rSVezIPCGnnpHc1/2E1F/js89IVAiIrpbJBsd
+rslYzCbMyJQQWl0ummFw/0byBozT3Sk7rZqEfNJMSUklSQiJDf811k31x4+EdsuZwrWztNw1jw/4uFyK
+qb7f9AN+C3NSCmVuZHN0cmVhbQplbmRvYmoKNDEgMCBvYmoKMjMzCmVuZG9iagozOSAwIG9iago8PCAv
+VHlwZSAvRm9udERlc2NyaXB0b3IgL0ZvbnROYW1lIC9UT1ZWTEMrQ2FsaWJyaSAvRmxhZ3MgNCAvRm9u
+dEJCb3ggWy01MDMgLTMwNyAxMjQwIDEwMjZdCi9JdGFsaWNBbmdsZSAwIC9Bc2NlbnQgOTUyIC9EZXNj
+ZW50IC0yNjkgL0NhcEhlaWdodCA4NDYgL1N0ZW1WIDAgL1hIZWlnaHQKNjM1IC9NYXhXaWR0aCAxMzI4
+IC9Gb250RmlsZTIgNDIgMCBSID4+CmVuZG9iago0MiAwIG9iago8PCAvTGVuZ3RoIDQzIDAgUiAvTGVu
+Z3RoMSA4MDggL0ZpbHRlciAvRmxhdGVEZWNvZGUgPj4Kc3RyZWFtCngBbVFLaxNRFD5zb+aRtk4eTWIr
+ScijiVXpTMmraEIqTWsRrV0owUdB0jaawCRqG6GCaFZBFNFFaN0o/RUiuBHqQsSN3VlFureLIkgx6VjP
+nUyhgufy3e9+5zVz76kt3C2CBHWgAHOVwm0wjJtH8t7U7t0w9SMArl4qFpif2S4iVUKHoYBLIA+UKrUl
+U19G7tFuze3H66ilSmHJ7A/fUAeqhUoRGY1KuAUU0EDFNQvDuBbh9ZWxL79FeMcy0E7zHTZ3K2w3bc2X
+DwE270QMfm5qljDMNg5BuQDYYQ1EIMgqNFgAzYJRFhfIM9exD/PXbZlf0M9+A+Dtj/ufGH9++nGy3dKf
+WLekFEordugY1omv9A2ArtV2q7Vq3TI6mUGDqEUGIDys8A1YRk/nW/gmIABGIIi9iFlVg8d4R7zcn0W6
+zss4CRFOwhRcwDJH0GHAJRNRdAnhkEKSR6OpeDyWJclENBySieFLpEayNB7zE4qZHU+WMM3R9d2rdFoX
+yIPwaD7O+4/YXIcEnnj7nEOZiP3itUhG8YlUFCgviYMjY6Fz2kRoQ3T43B6fU5KcPo/b5xD1r7zc+snL
+7ZxFazepkJ4ZHaAvuiRiEYQ3/r7+4+ng2byt127p7rU7PJLodPQMjs/oDbeX9fC63Z1e+hR7iZW9Ha4K
+m9ANEGFXiiYTqXjMw1XVbEZhqEyqygQCX2J5b8eyDd8x9zCE/83nD9QePHNlNXNKYeDWFHZKp4e49/s+
+7YyqjP8Hxoyc5kSMGV2azufP507kClp5dqH8FwhFi6EKZW5kc3RyZWFtCmVuZG9iago0MyAwIG9iago1
+OTIKZW5kb2JqCjQ0IDAgb2JqCihNYWMgT1MgWCAxMC4xMS40IFF1YXJ0eiBQREZDb250ZXh0KQplbmRv
+YmoKNDUgMCBvYmoKKEQ6MjAxNjA1MTEwODEwNDlaMDAnMDAnKQplbmRvYmoKMSAwIG9iago8PCAvUHJv
+ZHVjZXIgNDQgMCBSIC9DcmVhdGlvbkRhdGUgNDUgMCBSIC9Nb2REYXRlIDQ1IDAgUiA+PgplbmRvYmoK
+eHJlZgowIDQ2CjAwMDAwMDAwMDAgNjU1MzUgZiAKMDAwMDAyNTEyNSAwMDAwMCBuIAowMDAwMDAyODkx
+IDAwMDAwIG4gCjAwMDAwMTI2NzEgMDAwMDAgbiAKMDAwMDAwMDAyMiAwMDAwMCBuIAowMDAwMDAyODcx
+IDAwMDAwIG4gCjAwMDAwMDMwMjAgMDAwMDAgbiAKMDAwMDAwOTg1OSAwMDAwMCBuIAowMDAwMDAwMDAw
+IDAwMDAwIG4gCjAwMDAwMTk3OTUgMDAwMDAgbiAKMDAwMDAwMDAwMCAwMDAwMCBuIAowMDAwMDIzNjEx
+IDAwMDAwIG4gCjAwMDAwMDMyNzIgMDAwMDAgbiAKMDAwMDAwMzgxMSAwMDAwMCBuIAowMDAwMDAzMjQ1
+IDAwMDAwIG4gCjAwMDAwMTI4MTggMDAwMDAgbiAKMDAwMDAwNjkyMyAwMDAwMCBuIAowMDAwMDA2OTY4
+IDAwMDAwIG4gCjAwMDAwMDcwMjIgMDAwMDAgbiAKMDAwMDAwNzA3NSAwMDAwMCBuIAowMDAwMDEyNjM0
+IDAwMDAwIG4gCjAwMDAwMDM4MzEgMDAwMDAgbiAKMDAwMDAwNjkwMiAwMDAwMCBuIAowMDAwMDA3MTIw
+IDAwMDAwIG4gCjAwMDAwMDk4MzggMDAwMDAgbiAKMDAwMDAwOTg5NSAwMDAwMCBuIAowMDAwMDEyNjEz
+IDAwMDAwIG4gCjAwMDAwMTI3NTQgMDAwMDAgbiAKMDAwMDAxOTU0MSAwMDAwMCBuIAowMDAwMDEzMDA0
+IDAwMDAwIG4gCjAwMDAwMTkzNzcgMDAwMDAgbiAKMDAwMDAxOTU3MyAwMDAwMCBuIAowMDAwMDE5NzM2
+IDAwMDAwIG4gCjAwMDAwMTk3NTUgMDAwMDAgbiAKMDAwMDAyMDUwMyAwMDAwMCBuIAowMDAwMDIwMDQ2
+IDAwMDAwIG4gCjAwMDAwMjA0ODMgMDAwMDAgbiAKMDAwMDAyMDczMCAwMDAwMCBuIAowMDAwMDIzNTkw
+IDAwMDAwIG4gCjAwMDAwMjQxMDcgMDAwMDAgbiAKMDAwMDAyMzc3OCAwMDAwMCBuIAowMDAwMDI0MDg3
+IDAwMDAwIG4gCjAwMDAwMjQzMjkgMDAwMDAgbiAKMDAwMDAyNTAxMCAwMDAwMCBuIAowMDAwMDI1MDMw
+IDAwMDAwIG4gCjAwMDAwMjUwODMgMDAwMDAgbiAKdHJhaWxlcgo8PCAvU2l6ZSA0NiAvUm9vdCAyNyAw
+IFIgL0luZm8gMSAwIFIgL0lEIFsgPDdlMzUyZmM1YjQ5NzJhNWQ3ZDRiMWJkNjRiMTQ3NjMzPgo8N2Uz
+NTJmYzViNDk3MmE1ZDdkNGIxYmQ2NGIxNDc2MzM+IF0gPj4Kc3RhcnR4cmVmCjI1MjAwCiUlRU9GCg==
+</data><mime>application/pdf</mime><width>0</width><height>0</height><duration>0</duration><resource-attributes><timestamp>19700101T000000Z</timestamp><file-name>JavaCollectionFrameworkSetUML.pdf</file-name></resource-attributes></resource></note>
+</en-export>
