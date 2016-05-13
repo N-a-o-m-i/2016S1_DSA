@@ -1,0 +1,3 @@
+run:
+dog found at index 4
+BUILD SUCCESSFUL (total time: 0 seconds)
