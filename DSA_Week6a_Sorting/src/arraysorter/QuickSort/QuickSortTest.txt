@@ -1,0 +1,5 @@
+run:
+Unsorted list:
+shoe, cloth, bed, bad, apple, box, chair, bottle, fox, tree,
+Sorted list
+apple, bad, bed, bottle, box, chair, cloth, fox, shoe, tree, BUILD SUCCESSFUL (total time: 0 seconds)
