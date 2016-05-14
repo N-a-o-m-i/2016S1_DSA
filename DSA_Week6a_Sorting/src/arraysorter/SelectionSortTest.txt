@@ -1,0 +1,5 @@
+run:
+Unsorted list:
+cow, fly, dog, bat, fox, cat, eel, ant,
+Sorted list
+ant, bat, cat, cow, dog, eel, fly, fox, BUILD SUCCESSFUL (total time: 0 seconds)
