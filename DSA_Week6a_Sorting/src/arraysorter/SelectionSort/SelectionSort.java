@@ -1,4 +1,4 @@
-package arraysorter;
+package arraysorter.SelectionSort;
 
 /**
  *
