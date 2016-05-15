@@ -10,7 +10,7 @@ public class RadixSort
     public static void main(String[] args)
     {
         //three-digit non-negative integers
-        int[] list = {73, 521, 135, 291, 550, 153, 913, 910, 770, 321, 39, 125};
+        int[] list = {73, 521, 135, 291, 550, 153, 913, 6, 910, 770, 43, 321, 39, 125};
         final int NUM_DIGITS = 3;
         //create the 10 queues
         LinkedQueue<Integer>[] radixQueues = (LinkedQueue<Integer>[]) new LinkedQueue[10];//unchecked
@@ -33,16 +33,19 @@ public class RadixSort
             int nextIndex = 0;
             for(queueNum=0; queueNum<10;queueNum++)
             {
-                while()
+                while(!radixQueues[queueNum].isEmpty())
                 {
-                    
+                    list[nextIndex++] = radixQueues[queueNum].dequeue().intValue();
                 }
             }
-            
+            pwrOfTen *= 10;
         }
-        
-        
-        
+        //output the results
+        for(int i=0; i<list.length;i++)
+        {
+            System.out.print(((i>0)? ", ":"") + list[i]);
+        }
+        System.out.println();
     }
     
 }
