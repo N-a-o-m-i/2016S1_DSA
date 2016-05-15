@@ -1,0 +1,12 @@
+run:
+The 1-th smallest element is: 0
+The 2-th smallest element is: 0
+The 3-th smallest element is: 3
+The 4-th smallest element is: 4
+The 5-th smallest element is: 8
+The 6-th smallest element is: 8
+The 7-th smallest element is: 33
+The 8-th smallest element is: 56
+The 9-th smallest element is: 78
+The 10-th smallest element is: 123
+BUILD SUCCESSFUL (total time: 0 seconds)
