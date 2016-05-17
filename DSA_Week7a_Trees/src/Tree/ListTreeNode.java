@@ -162,7 +162,23 @@ public class ListTreeNode<E> implements MutableTreeNode
     
     public static void main(String[] args)
     {
-        
+        //create some sample nodes
+        MutableTreeNode root = new ListTreeNode<String>("A");
+        MutableTreeNode nodeB = new ListTreeNode<String>("B");
+        MutableTreeNode nodeC = new ListTreeNode<String>("C");
+        MutableTreeNode nodeD = new ListTreeNode<String>("D");
+        MutableTreeNode nodeE = new ListTreeNode<String>("E");
+        MutableTreeNode nodeF = new ListTreeNode<String>("F");
+        //build the tree
+        nodeB.insert(nodeD, 0);
+        nodeB.insert(nodeE, 1);
+        nodeC.insert(nodeF, 0);
+        root.insert(nodeB, 0);
+        root.insert(nodeC, 1);
+        System.out.println("Origin Tree: " + root);
+        root.remove(nodeC);
+        nodeB.insert(nodeC, 1);
+        System.out.println("Modified Tree: " + root);
     }
     
     //utility class to wrap an Iterator object as an Enumeration object
