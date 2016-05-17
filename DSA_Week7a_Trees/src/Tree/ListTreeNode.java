@@ -145,6 +145,21 @@ public class ListTreeNode<E> implements MutableTreeNode
         return element;
     }
     
+    //returns a string representation of the node and its child nodes
+    //in preorder notation
+    public String toString()
+    {
+        String output = "" + this.element;
+        if(!isLeaf())
+        {
+            output += "[ ";
+            for(MutableTreeNode childNode : children)
+                output += childNode + " ";
+            output += "]";
+        }
+        return output;
+    }
+    
     public static void main(String[] args)
     {
         
