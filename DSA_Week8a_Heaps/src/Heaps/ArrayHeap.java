@@ -63,13 +63,27 @@ public class ArrayHeap<E> implements HeapADT<E>
     {
         int currentIndex = numElements-1;//start with added element
         int parentIndex = (currentIndex-1)/2;
-        
+        while(currentIndex>0 && compare(elements[currentIndex], elements[parentIndex])<0)
+        {
+            
+            
+            
+        }
         
         
     }
     
     
 
+    
+    private int compare(E element1, E element2)
+    {
+        if(comparator!=null)
+            return comparator.compare(element1, element2);
+//        else if(element1!=null && element1 instanceof Comparable)
+            
+    }
+    
     @Override
     public E removeMin() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
