@@ -1,4 +1,4 @@
-//package ReadXMLDocument;
+package ReadXMLDocument;
 
 /**
    Some utility methods for extracting information from a DOM tree
@@ -15,7 +15,7 @@ public class DOMUtilities
 {
    // This method returns all the child Nodes of the parentNode
    // that has a given NodeName (case insensitive)
-   public Collection<Node> getAllChildNodes(Node parentNode, 
+   public static Collection<Node> getAllChildNodes(Node parentNode, 
       String name)
    {  ArrayList<Node> nodeList = new ArrayList<Node>();
       NodeList childNodes = parentNode.getChildNodes();
@@ -31,7 +31,7 @@ public class DOMUtilities
    // This method returns the attribute of the parentNode as a String
    // that has a given NodeName (case sensitive!) or null if no such
    // attribute is found
-   public String getAttributeString(Node parentNode, String name)
+   public static String getAttributeString(Node parentNode, String name)
    {  String attribute = null;
       if ((parentNode != null) && (name != null))
       {  NamedNodeMap attributeNodes = parentNode.getAttributes();
@@ -48,7 +48,7 @@ public class DOMUtilities
    // occur as Text child nodes of the node that have name "#text"
    // Note there should actually only be a single text node if DOM
    // tree has been normalized
-   public String getTextContent(Node node)
+   public static String getTextContent(Node node)
    {  String textContent = "";
       if (node != null)
       {  NodeList childNodes = node.getChildNodes();
