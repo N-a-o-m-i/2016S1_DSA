@@ -1,0 +1,19 @@
+run:
+DESCRIPTION: Some useful books for second year computer science
+
+ISBN: 0-321-24584-9
+Title: Java Software Structures
+Author: John Lewis
+Author: Joseph Chase
+
+ISBN: 0-02-354856-8
+Title: Computer Graphics Using OpenGL
+Author: Francis Hill
+
+ISBN: 0-262-03293-7
+Title: Introduction To Algorithms
+Author: Thomas Corman
+Author: Charles Leiserson
+Author: Ronald Rivest
+Author: Clifford Stein
+BUILD SUCCESSFUL (total time: 0 seconds)
