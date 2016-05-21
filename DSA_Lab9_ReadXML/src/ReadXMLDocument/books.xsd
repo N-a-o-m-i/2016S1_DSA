@@ -1,0 +1,48 @@
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+   <xsd:annotation>
+      <xsd:documentation xml:lang="en">
+         books.xsd XML Schema for defining a list of books
+      </xsd:documentation>
+   </xsd:annotation>
+
+   <xsd:element name="books">
+      <xsd:complexType>
+         <xsd:sequence>
+            <xsd:element name="description" type="xsd:string"
+               minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="book" type="BookType"
+               minOccurs="0" maxOccurs="unbounded"/>
+         </xsd:sequence>
+      </xsd:complexType>
+   </xsd:element>
+
+   <xsd:complexType name="BookType">
+      <xsd:sequence>
+         <xsd:element name="title" type="xsd:string"/>
+         <xsd:element name="author" type="xsd:string"
+            minOccurs="1" maxOccurs="unbounded"/>
+         <xsd:element name="pub" minOccurs="0" maxOccurs="1">
+            <xsd:complexType>
+               <xsd:attribute name="name" type="xsd:string"
+                  use="required"/>
+               <xsd:attribute name="website" type="xsd:string"
+                  use="optional"/>
+            </xsd:complexType>
+         </xsd:element>
+      </xsd:sequence>
+      
+      <xsd:attribute name="isbn" type="xsd:string" use="required"/>
+      
+      <xsd:attribute name="cover" use="optional" default="hard">
+        <xsd:simpleType>
+           <xsd:restriction base="xsd:string">
+              <xsd:enumeration value="hard"/>
+              <xsd:enumeration value="soft"/>
+           </xsd:restriction>
+        </xsd:simpleType>
+      </xsd:attribute>
+      
+      <xsd:attribute name="edition" type="xsd:positiveInteger"
+         use="optional"/>
+   </xsd:complexType>
+</xsd:schema>
