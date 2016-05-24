@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<!-- document of a list of computer books -->
+<books 
+   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+   xsi:noNamespaceSchemaLocation="books.xsd">
+   <description>
+      Some useful books for second year computer science
+   </description>
+   <book isbn="0-321-24584-9" cover ="hard"  edition = "12">
+      <title>Java Software Structures</title>
+      <author>John Lewis</author>
+      <author>Joseph Chase</author>
+      <author>Seth Hall</author>
+      <pub name="Addison Wesley" website="http://www.aw-bc.com/"/>
+   </book>
+   <book isbn="0-02-354856-8" cover ="hard"  edition = "2">
+      <title>Computer Graphics Using OpenGL</title>
+      <author>Francis Hill</author>
+      <pub name="Prentice Hall" website="http://www.prenhall.com/"/>
+   </book>
+   <book isbn="0-262-03293-7" cover ="soft"  edition = "2">
+      <title>Introduction To Algorithms</title>
+      <author>Thomas Corman</author>
+      <author>Charles Leiserson</author>
+      <author>Ronald Rivest</author>
+      <author>Clifford Stein</author>
+      <author>Bob Brown</author>
+      <pub name="MIT Press" website="http://mitpress.mit.edu/"/>
+   </book>
+</books>

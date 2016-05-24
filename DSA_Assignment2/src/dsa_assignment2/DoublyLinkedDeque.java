@@ -1,4 +1,4 @@
-package dsa_assignmetnt2;
+package dsa_assignment2;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -123,7 +123,6 @@ public class DoublyLinkedDeque <E extends Comparable> implements DequeADT<E>
         }
     }
     
-    @Override
     public void enqueueFront(E element)
     {
         DLNode newNode = new DLNode(element, firstNode, null);
@@ -139,7 +138,6 @@ public class DoublyLinkedDeque <E extends Comparable> implements DequeADT<E>
         size++;
     }
     
-    @Override
     public void enqueueRear(E element) 
     {
         DLNode newNode = new DLNode(element, null, lastNode);
@@ -155,7 +153,6 @@ public class DoublyLinkedDeque <E extends Comparable> implements DequeADT<E>
         size++;
     }
 
-    @Override
     public E dequeueFront() throws NoSuchElementException 
     {
         E front = null;
@@ -176,7 +173,6 @@ public class DoublyLinkedDeque <E extends Comparable> implements DequeADT<E>
         return front;
     }
     
-    @Override
     public E dequeueRear() throws NoSuchElementException 
     {
         E back = null;
@@ -197,7 +193,6 @@ public class DoublyLinkedDeque <E extends Comparable> implements DequeADT<E>
         return back;
     }
     
-    @Override
     public E first() throws NoSuchElementException
     {
         E front = null;
@@ -208,7 +203,6 @@ public class DoublyLinkedDeque <E extends Comparable> implements DequeADT<E>
         return front;
     }
     
-    @Override
     public E last() throws NoSuchElementException 
     {
         E back = null;
@@ -219,7 +213,6 @@ public class DoublyLinkedDeque <E extends Comparable> implements DequeADT<E>
         return back;
     }
 
-    @Override
     public Iterator<E> iterator(boolean fromFront)
     {
         if(fromFront)
@@ -229,19 +222,16 @@ public class DoublyLinkedDeque <E extends Comparable> implements DequeADT<E>
         return new BackIterator();
     }
 
-    @Override
     public boolean isEmpty() 
     {
         return firstNode == null;
     }
 
-    @Override
     public int size() 
     {
         return size;
     }
 
-    @Override
     public void clear()
     {
 //        firstNode.next.previous = null;
