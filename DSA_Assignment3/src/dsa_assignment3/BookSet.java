@@ -77,7 +77,6 @@ public class BookSet extends AbstractSet
         //and look for books
         booksMap = new LinkedHashMap<String, Book>();
         
-        
         try
         {
             //create a validating DOM document builder
@@ -146,8 +145,7 @@ public class BookSet extends AbstractSet
                 
                 Book book = new Book(isbn, title, authors.iterator(), pub, newCover, newEdition);
                 add(book);
-            }
-            
+            } 
         }
         catch (FactoryConfigurationError e)
         {
@@ -264,6 +262,7 @@ public class BookSet extends AbstractSet
         }
         return nodeList;
     }
+    
     // This method returns the attribute of the parentNode as a String
     // that has a given NodeName (case sensitive!) or null if no such
     // attribute is found
@@ -282,6 +281,7 @@ public class BookSet extends AbstractSet
         }
         return attribute;
     }
+    
     // This method returns the text content of a node which should
     // occur as Text child nodes of the node that have name "#text"
     // Note there should actually only be a single text node if DOM
@@ -301,6 +301,7 @@ public class BookSet extends AbstractSet
         }
         return textContent;
     }
+    
     //inner class that holds a ArrayList of strings that relate to
     //the isbn keys for the HashMap used for the Gui JList
     //DONT CHANGE THIS CLASS
@@ -317,6 +318,7 @@ public class BookSet extends AbstractSet
             isbnList.addAll(isbnData);
             Collections.sort(isbnList);
         }
+        
         //gets the element at the specified index
         public Object getElementAt(int index)
         {
@@ -325,11 +327,13 @@ public class BookSet extends AbstractSet
             else
                 return null;
         }
+        
         //gets the size of the arrayList
         public int getSize()
         {
             return isbnList.size();
         }
+        
         //adds to the isbn to the arrayList and notifies
         //any listeners to it by fireIntervalAdded
         public boolean addISBN(String isbn)
@@ -340,6 +344,7 @@ public class BookSet extends AbstractSet
             fireIntervalAdded(this,index,index);
             return true;
         }
+        
         //removes the isbn from the arrayList and notifies
         //any listeners to it by fireIntervalRemoved
         public boolean removeISBN(String isbn)
@@ -350,6 +355,7 @@ public class BookSet extends AbstractSet
             return true;
         }
     }
+    
     //main method to test the program
     public static void main(String args[])
     {
@@ -371,7 +377,6 @@ public class BookSet extends AbstractSet
         bookSet.remove(book2);
         
         System.out.println(bookSet.toString());
-        
         
 //        try
 //        {
@@ -404,6 +409,5 @@ public class BookSet extends AbstractSet
 //        {
 //            System.out.println(e.getMessage());
 //        }
-//        
     }
 }

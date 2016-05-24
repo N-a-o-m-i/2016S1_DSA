@@ -9,7 +9,9 @@ import java.awt.event.KeyListener;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
@@ -86,7 +88,7 @@ public class BooksGUI extends JPanel implements ActionListener, KeyListener, Lis
         save = new JMenuItem("Save");
         exit = new JMenuItem("Exit");
         open.addActionListener(this);
-        
+        save.addActionListener(this);
         
         menuBar.add(file);
         menuBar.add(other);
@@ -117,9 +119,6 @@ public class BooksGUI extends JPanel implements ActionListener, KeyListener, Lis
                     list.setModel(bookSet.getISBNListModel());
                     splitPane.setLeftComponent(list);
                     fis.close();
-                    
-                    
-                    
                 }
                 catch(IOException ioe)
                 {
@@ -135,25 +134,42 @@ public class BooksGUI extends JPanel implements ActionListener, KeyListener, Lis
                 }
             }   
         }
-        
-        
+        else if(source==save)
+        {
+            //creat file chooser GUI that defaults to current directory
+            JFileChooser chooser = new JFileChooser(new File("."));
+            int statue = chooser.showSaveDialog(this);
+            if(statue == JFileChooser.APPROVE_OPTION)
+            {
+                File fileToSave = chooser.getSelectedFile();
+//                try 
+//                {
+//                    FileOutputStream fos = new FileOutputStream(fileToSave);
+//                    
+//                }
+//                catch (Exception e) 
+//                {
+//                    
+//                }
+            }
+        }
     }
 
-    
-    
-    
     @Override
-    public void keyTyped(KeyEvent e) {
+    public void keyTyped(KeyEvent e) 
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void keyPressed(KeyEvent e) {
+    public void keyPressed(KeyEvent e) 
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent e) 
+    {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
@@ -161,7 +177,6 @@ public class BooksGUI extends JPanel implements ActionListener, KeyListener, Lis
     public static void main(String[] args)
     {
         BooksGUI GUI = new BooksGUI();
-        
         
     }
 
@@ -172,8 +187,5 @@ public class BooksGUI extends JPanel implements ActionListener, KeyListener, Lis
         {    
             splitPane.setRightComponent((bookSet.getBook(list.getSelectedValue().toString()).preparePanel()));
         }
-	
-        
-        
     }
 }
