@@ -45,50 +45,65 @@ public class BookSet extends AbstractSet
     {
         super();
         //compete this
-        
-        
+        booksMap = new LinkedHashMap<String, Book>();
+        ArrayList<String> isbnData = new ArrayList<String>();
+        isbnListModel = new ISBNListModel(isbnData);
+        description = "";
         
     }
+    
     //constructor that will accept a Collection of Books
     public BookSet(Collection<? extends Book> books)
     {
+        booksMap = new LinkedHashMap<String,Book>();
         Iterator<Book> iterator = (Iterator<Book>) books.iterator();
         ArrayList<String> isbnData = new ArrayList<String>();
         while(iterator.hasNext())
         {
+            
             Book book = iterator.next();
             booksMap.put(book.getISBN(), book);
             isbnData.add(book.getISBN());
         }
-        
-//        ArrayList<String> isbnData = new ArrayList<String>();
-//        while(iterator.hasNext())
-//        {
-//            Book book = iterator.next();
-//            isbnData.add(book.getISBN());
-//        }
+
         isbnListModel = new ISBNListModel(isbnData);
         description = "";
-
-        //compete this
-
-
     }
+    
     //constructor that will accept a Document that holds XML information
     public BookSet(Document document)
     {
-
         //complete this metod by traversing the XML tree, start from the root node
         //and look for books
+        booksMap = new LinkedHashMap<String, Book>();
+        document.getDocumentElement().normalize();
         
-
-
-
-
-
-
-
+        Node rootXMLNode = document.getDocumentElement();
+        
+        //get description
+        Collection<Node> descriptionCollection = getAllChildNodes(rootXMLNode, "description");
+        description = getTextContent(descriptionCollection.iterator().next()).trim();
+        
+        //get books
+        Collection<Node> bookCollection = getAllChildNodes(rootXMLNode, "book");
+        Iterator<Node> bookIterator = bookCollection.iterator();
+        
+        while(bookIterator.hasNext())
+        {
+            Node bookNode = bookIterator.next();
+            //get book's ISBN and title
+            getAttributeString(bookNode, "isbn");
+            Collection<Node> title = getAllChildNodes(bookNode, "title");
+            //get book's authors
+            Collection<Node> authorsNode = getAllChildNodes(bookNode, "author");
+            Iterator<Node> authorIterator = authorsNode.iterator();
+            while(authorIterator.hasNext())
+            {
+                Node authorNode = authorIterator.next();
+            }
+        }
     }
+    
     //this method adds a Book to the hashmap if is doesnt already contain
     //that isbn number and also adds the isbn value to the isbnListModel
     public boolean add(Book book)
@@ -118,46 +133,45 @@ public class BookSet extends AbstractSet
         }
         return false;
     }
+    
     //returns an iterator to iterate through the list
     public Iterator<Book> iterator()
-    {    //dont change
+    {   
+        //dont change
         return booksMap.values().iterator();
     }
+    
     //returns the number of values in the hashmap
     public int size()
     {
-        //compete this
-
-
+        return booksMap.size();
     }
+    
     //clears the hashmap
     public void clear()
     {
-      //complete this
-
+        booksMap.clear();
     }
+    
     //returns the book from hashmap without removing it with
     //the neccessary isbn number
     public Book getBook(String isbn)
     {
-      //compete this
-
-
+        return booksMap.get(isbn);
     }
+    
     //returns a ListModel with isbn values
     public ListModel getISBNListModel()
     {
-       //Complete this
-
-
-       return listModel
+        return isbnListModel;
     }
+    
     //returns description of XML file
     public String getDescription()
     {
-        //compete this
-        return null;
+        return description;
     }
+    
     //string representation of XML file
     public String toString()
     {   //dont change
@@ -288,8 +302,16 @@ public class BookSet extends AbstractSet
         Collection<Book> coll = new ArrayList<Book>();
         coll.add(book1);
         coll.add(book2);
-
-       /* try
+        BookSet bookSet = new BookSet(coll);
+        
+        Book book3 = new Book("2222");
+        bookSet.add(book3);
+        bookSet.remove(book2);
+        
+        System.out.println(bookSet.toString());
+        
+        
+        try
         {
             DocumentBuilderFactory builderFactory=DocumentBuilderFactory.newInstance();
             builderFactory.setNamespaceAware(true);
@@ -318,6 +340,6 @@ public class BookSet extends AbstractSet
         {
             System.out.println(e.getMessage());
         }
-        */
+        
     }
 }

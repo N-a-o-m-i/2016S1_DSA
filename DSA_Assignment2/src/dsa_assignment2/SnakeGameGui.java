@@ -48,7 +48,7 @@ public class SnakeGameGui extends JPanel implements ActionListener,KeyListener
    private static JFrame frame;
    private DoublyLinkedDeque<Food> DLDeque = new DoublyLinkedDeque<Food>();
    private Snake snake;
-   
+
    public SnakeGameGui()
    {
       super(new BorderLayout());
@@ -59,7 +59,7 @@ public class SnakeGameGui extends JPanel implements ActionListener,KeyListener
       restartButton = new JButton("Restart");
       restartButton.addActionListener(this);
       sliderPanel.add(restartButton);
-      
+
       snake = new Snake();
 
 
@@ -79,19 +79,19 @@ public class SnakeGameGui extends JPanel implements ActionListener,KeyListener
        //can be used to draw the snake and food
        @Override
        public void paintComponent(Graphics g)
-       {    
+       {
             super.paintComponent(g);
-            
+
             snake.drawSnake(g);
-            
+
             DLDeque.iterator(true);
             Iterator<Food> iterator = DLDeque.iterator(true);
             while(iterator.hasNext())
             {
                 iterator.next().drawFood(g);
-            }  
-            
-            
+            }
+
+
        }
    }
    @Override
@@ -142,7 +142,7 @@ public class SnakeGameGui extends JPanel implements ActionListener,KeyListener
      public void keyReleased(KeyEvent e) {
          //IGNORE
      }
-     
+
      public void FoodCollection()
      {
         for(int i = 1; i < NUM_FOOD; i++)
@@ -153,9 +153,9 @@ public class SnakeGameGui extends JPanel implements ActionListener,KeyListener
             t.start();
             DLDeque.enqueueRear(food);
         }
-        
+
      }
-     
+
    public static void main(String[] args)
    {
       System.out.println("============SNAKE===============");

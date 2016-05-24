@@ -17,25 +17,25 @@ import org.xml.sax.SAXException;
  *
  * @author Naomi
  */
-public class BooksReader 
+public class BooksReader
 {
     private static String JAXP_SCHEMA_LANGUAGE = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
     private static String JAXP_SCHEMA_SOURCE = "http://java.sun.com/xml/jaxp/properties/schemaSource";
     private static String W3C_XML_SCHEMA = "http://www.w3.org/2001/XMLSchema";
     private static String schema = "books.xsd";
-    
-    public static void main(String[] args) 
+
+    public static void main(String[] args)
     {
-        try 
+        try
         {
             printXMLTree();
         }
-        catch (SAXException | IOException | ParserConfigurationException e) 
+        catch (SAXException | IOException | ParserConfigurationException e)
         {
             e.printStackTrace();
         }
     }
-    
+
     private static void printXMLTree() throws FileNotFoundException, ParserConfigurationException, SAXException, IOException
     {
         //Parse an XML document and build a normalized DOM tree
@@ -43,18 +43,18 @@ public class BooksReader
         DocumentBuilder builder = getBuilder();
         Document document = builder.parse(input);
         document.getDocumentElement().normalize();
-        
+
         //getting root node
         Node rootXMLNode = document.getDocumentElement();
-        
+
         //printing out description
         Collection<Node> description = DOMUtilities.getAllChildNodes(rootXMLNode, "description");
         System.out.println("DESCRIPTION: " + DOMUtilities.getTextContent(description.iterator().next()).trim());
-        
+
         //printing out books
         Collection<Node> bookCollection = DOMUtilities.getAllChildNodes(rootXMLNode, "book");
         Iterator<Node> bookIterator = bookCollection.iterator();
-        
+
         while(bookIterator.hasNext())
         {
             Node book = bookIterator.next();
@@ -62,15 +62,15 @@ public class BooksReader
             System.out.println("\nISBN: " + DOMUtilities.getAttributeString(book, "isbn"));
             Collection<Node> title = DOMUtilities.getAllChildNodes(book, "title");
             System.out.println("Title: " + DOMUtilities.getTextContent(title.iterator().next()));
-            
+
             //printing out book authors
             Collection<Node> authors = DOMUtilities.getAllChildNodes(book, "author");
-            Iterator<Node> authorIterator = authors.iterator();            
+            Iterator<Node> authorIterator = authors.iterator();
             /*
             for(Node n : authors)
             {
                 System.out.println("Author: " + DOMUtilities.getTextContent(n));
-            
+
             }
             */
             while(authorIterator.hasNext())
@@ -80,7 +80,7 @@ public class BooksReader
             }
         }
     }
-    
+
     private static DocumentBuilder getBuilder() throws ParserConfigurationException
     {
         DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
@@ -91,5 +91,5 @@ public class BooksReader
         DocumentBuilder builder = builderFactory.newDocumentBuilder();
         return builder;
     }
-    
+
 }
