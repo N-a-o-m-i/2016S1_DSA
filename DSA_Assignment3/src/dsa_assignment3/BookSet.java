@@ -30,6 +30,7 @@ import javax.xml.parsers.FactoryConfigurationError;
 import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 import java.io.IOException;
+import java.io.InputStream;
 
 
 public class BookSet extends AbstractSet
@@ -37,9 +38,10 @@ public class BookSet extends AbstractSet
     private LinkedHashMap<String,Book> booksMap;
     private ISBNListModel isbnListModel;
     private String description;
+    private Document document;
     private static final String JAXP_SCHEMA_LANGUAGE  = "http://java.sun.com/xml/jaxp/properties/schemaLanguage";
     private static final String W3C_XML_SCHEMA  = "http://www.w3.org/2001/XMLSchema";
-
+    
     //default constructor that inititialises LinkedHashMap and call to super class
     public BookSet()
     {
@@ -47,7 +49,6 @@ public class BookSet extends AbstractSet
         //compete this
         booksMap = new LinkedHashMap<String, Book>();
         ArrayList<String> isbnData = new ArrayList<String>();
-        isbnListModel = new ISBNListModel(isbnData);
         description = "";
         
     }
@@ -66,56 +67,117 @@ public class BookSet extends AbstractSet
             isbnData.add(book.getISBN());
         }
 
-        isbnListModel = new ISBNListModel(isbnData);
         description = "";
     }
     
     //constructor that will accept a Document that holds XML information
-    public BookSet(Document document)
+    public BookSet(InputStream in) throws ParserConfigurationException, SAXException, IOException
     {
         //complete this metod by traversing the XML tree, start from the root node
         //and look for books
         booksMap = new LinkedHashMap<String, Book>();
-        document.getDocumentElement().normalize();
         
-        Node rootXMLNode = document.getDocumentElement();
         
-        //get description
-        Collection<Node> descriptionCollection = getAllChildNodes(rootXMLNode, "description");
-        description = getTextContent(descriptionCollection.iterator().next()).trim();
-        
-        //get books
-        Collection<Node> bookCollection = getAllChildNodes(rootXMLNode, "book");
-        Iterator<Node> bookIterator = bookCollection.iterator();
-        
-        while(bookIterator.hasNext())
+        try
         {
-            Node bookNode = bookIterator.next();
-            //get book's ISBN and title
-            getAttributeString(bookNode, "isbn");
-            Collection<Node> title = getAllChildNodes(bookNode, "title");
-            //get book's authors
-            Collection<Node> authorsNode = getAllChildNodes(bookNode, "author");
-            Iterator<Node> authorIterator = authorsNode.iterator();
-            while(authorIterator.hasNext())
+            //create a validating DOM document builder
+            //using the default parser
+            DocumentBuilderFactory builderFactory = DocumentBuilderFactory.newInstance();
+            builderFactory.setNamespaceAware(true);
+            builderFactory.setValidating(true);
+            builderFactory.setAttribute(JAXP_SCHEMA_LANGUAGE, W3C_XML_SCHEMA);
+            DocumentBuilder builder = builderFactory.newDocumentBuilder();
+            //parse the input stream
+            document = builder.parse(in);
+            document.getDocumentElement().normalize();
+            //prepare a JTree UI from the document
+            Node rootXMLNode = document.getDocumentElement();
+            
+            //get description
+            Collection<Node> descriptionCollection = getAllChildNodes(rootXMLNode, "description");
+            description = getTextContent(descriptionCollection.iterator().next()).trim();
+
+            //get books
+            Collection<Node> bookCollection = getAllChildNodes(rootXMLNode, "book");
+            Iterator<Node> bookIterator = bookCollection.iterator();
+
+            while(bookIterator.hasNext())
             {
-                Node authorNode = authorIterator.next();
+                Node bookNode = bookIterator.next();
+                //get book's ISBN and title
+                String isbn = getAttributeString(bookNode, "isbn");
+                //get book's title
+                Node titleNode = ((ArrayList<Node>) getAllChildNodes(bookNode, "title")).get(0);
+                String title = titleNode.getTextContent();
+                //get book's authors
+                Collection<Node> authorsNode = getAllChildNodes(bookNode, "author");
+                Iterator<Node> authorIterator = authorsNode.iterator();
+                ArrayList<String> authors = new ArrayList<String>();
+                while(authorIterator.hasNext())
+                {
+                    Node authorNode = authorIterator.next();
+                    authors.add(authorNode.getTextContent());
+                }
+                //get book's publisher
+                Node pubNode = ((ArrayList<Node>) getAllChildNodes(bookNode, "pub")).get(0);
+                Publisher pub = null;
+                if(pubNode != null)
+                {
+                    String pubName = getAttributeString(pubNode, "name");
+                    String pubWebsite = null;
+                    if(getAttributeString(pubNode, "website") != null)
+                    {
+                        pubWebsite = getAttributeString(pubNode, "website");
+                    }   
+                    pub = new Publisher(pubName, pubWebsite);
+                }
+                
+                //get the cover
+                String cover = getAttributeString(bookNode, "cover");
+                Book.Cover newCover = Book.Cover.HARD;
+                if(cover != null)
+    			newCover = (cover.equalsIgnoreCase("soft")?Book.Cover.SOFT:Book.Cover.HARD);
+                
+                //get the edition
+                String edition = getAttributeString(bookNode, "edition");
+                int newEdition = 0;
+                if(edition!=null)
+                    newEdition = Integer.parseInt(edition);
+                
+                Book book = new Book(isbn, title, authors.iterator(), pub, newCover, newEdition);
+                add(book);
             }
+            
+        }
+        catch (FactoryConfigurationError e)
+        {
+            System.out.println(e.getMessage());
+        }
+        catch (ParserConfigurationException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        catch (SAXException e)
+        {
+            System.out.println(e.getMessage());
+        }
+        catch (IOException e)
+        {
+            System.out.println(e.getMessage());
         }
     }
     
-    //this method adds a Book to the hashmap if is doesnt already contain
+    //this method adds a Book to the hashmap if is doesn't already contain
     //that isbn number and also adds the isbn value to the isbnListModel
     public boolean add(Book book)
     {
-        for(int i=0; i<isbnListModel.getSize(); i++)
-        {
-            while(isbnListModel.getElementAt(i)==book.getISBN())
-            {
-                return false;
-            }
-            booksMap.put(book.getISBN(), book);
-        }
+        if(booksMap.containsKey(book.getISBN()))
+            return false;
+        booksMap.put(book.getISBN(), book);
+        if(booksMap.size() == 1)
+            isbnListModel = new ISBNListModel(booksMap.keySet());
+        else
+            isbnListModel.addISBN(book.getISBN());
         return true;
     }
     
@@ -311,35 +373,37 @@ public class BookSet extends AbstractSet
         System.out.println(bookSet.toString());
         
         
-        try
-        {
-            DocumentBuilderFactory builderFactory=DocumentBuilderFactory.newInstance();
-            builderFactory.setNamespaceAware(true);
-            builderFactory.setValidating(true);
-            builderFactory.setAttribute(JAXP_SCHEMA_LANGUAGE,W3C_XML_SCHEMA);
-            DocumentBuilder builder = builderFactory.newDocumentBuilder();
-            // parse the input stream
-            Document document = builder.parse(file);
-            BookSet bookset = new BookSet(document);
-            System.out.println("=====Printing out ToString=====");
-            System.out.println(bookset.toString());
-        }
-        catch (FactoryConfigurationError e)
-        {
-            System.out.println(e.getMessage());
-        }
-        catch (ParserConfigurationException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        catch (SAXException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        catch (IOException e)
-        {
-            System.out.println(e.getMessage());
-        }
-        
+//        try
+//        {
+//            DocumentBuilderFactory builderFactory=DocumentBuilderFactory.newInstance();
+//            builderFactory.setNamespaceAware(true);
+//            builderFactory.setValidating(true);
+//            builderFactory.setAttribute(JAXP_SCHEMA_LANGUAGE,W3C_XML_SCHEMA);
+//            DocumentBuilder builder = builderFactory.newDocumentBuilder();
+//            // parse the input stream
+//            Document document = builder.parse(file);
+//            document.getDocumentElement().normalize();
+//            
+//            BookSet bookset = new BookSet(document);
+//            System.out.println("=====Printing out ToString=====");
+//            System.out.println(bookset.toString());
+//        }
+//        catch (FactoryConfigurationError e)
+//        {
+//            System.out.println(e.getMessage());
+//        }
+//        catch (ParserConfigurationException e)
+//        {
+//            System.out.println(e.getMessage());
+//        }
+//        catch (SAXException e)
+//        {
+//            System.out.println(e.getMessage());
+//        }
+//        catch (IOException e)
+//        {
+//            System.out.println(e.getMessage());
+//        }
+//        
     }
 }
