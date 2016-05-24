@@ -53,14 +53,24 @@ public class BookSet extends AbstractSet
     public BookSet(Collection<? extends Book> books)
     {
         Iterator<Book> iterator = (Iterator<Book>) books.iterator();
-        
+        ArrayList<String> isbnData = new ArrayList<String>();
         while(iterator.hasNext())
         {
             Book book = iterator.next();
             booksMap.put(book.getISBN(), book);
+            isbnData.add(book.getISBN());
         }
+        
+//        ArrayList<String> isbnData = new ArrayList<String>();
+//        while(iterator.hasNext())
+//        {
+//            Book book = iterator.next();
+//            isbnData.add(book.getISBN());
+//        }
+        isbnListModel = new ISBNListModel(isbnData);
+        description = "";
 
-         //compete this
+        //compete this
 
 
     }
@@ -70,7 +80,7 @@ public class BookSet extends AbstractSet
 
         //complete this metod by traversing the XML tree, start from the root node
         //and look for books
-
+        
 
 
 
@@ -83,23 +93,30 @@ public class BookSet extends AbstractSet
     //that isbn number and also adds the isbn value to the isbnListModel
     public boolean add(Book book)
     {
-
-       //compete this
-
-
-
-
-
+        for(int i=0; i<isbnListModel.getSize(); i++)
+        {
+            while(isbnListModel.getElementAt(i)==book.getISBN())
+            {
+                return false;
+            }
+            booksMap.put(book.getISBN(), book);
+        }
+        return true;
     }
+    
     //this method removes a Book from the hashmap if it contains
     //that isbn number and also adds the isbn value to the isbnListModel
-    public boolean remove(Object o)
+    public boolean remove(Book book)
     {
-       //compete this
-
-
-
-
+        for(int i=0; i<isbnListModel.getSize(); i++)
+        {
+            if(isbnListModel.getElementAt(i) == book.getISBN())
+            {
+                booksMap.remove(book.getISBN());
+                return true;
+            }
+        }
+        return false;
     }
     //returns an iterator to iterate through the list
     public Iterator<Book> iterator()
