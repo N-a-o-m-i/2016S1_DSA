@@ -1,4 +1,4 @@
-package dsa_assignment4;
+package dsa_assignment4.Question2;
 
 /**
  *

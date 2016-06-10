@@ -1,4 +1,4 @@
-package dsa_assignment4;
+package dsa_assignment4.Question1;
 
 /**
  *
@@ -183,16 +183,21 @@ public class HashTableWith
     public String output()
     {
         String output = "";
-        for(int i=0; i<size; i++)
+        for(int i=0; i<table.length; i++)
         {
+            output += (i+1) + ": ";
             Entry node = table[i];
+            if(node == null)
+            {
+                output += "()";
+            }
             while(node != null)
             {
                 output += "(" + (node.key % size) + " " + node.value + "),";
                 node = node.next;
             }
+            output += "\t\n";
         }
-        output += "\t\n";
         return output;
     }
     
