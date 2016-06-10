@@ -1,0 +1,7 @@
+run:
+Please enter the username
+student
+Please enter the password
+fpn871
+[Auckland, Sydney, Fiji, Samoa, Singapore, Tonga]
+BUILD SUCCESSFUL (total time: 8 seconds)

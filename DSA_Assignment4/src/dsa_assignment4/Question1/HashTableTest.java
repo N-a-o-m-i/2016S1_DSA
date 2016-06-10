@@ -40,7 +40,4 @@ public class HashTableTest
         System.out.println("\t\n" + "clear done" + "\t\n" + ht.output() );
         
     }
-    
-    
-    
 }
