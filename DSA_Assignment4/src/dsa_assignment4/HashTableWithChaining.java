@@ -12,7 +12,7 @@ public class HashTableWithChaining<E>
     private int binSize;//the size of the bin
     private HashNode[] ht;//keep the linkedArray on the table
     
-    //hash function
+    //hash function, return modulo
     private int h(Object theKey)
     {
         return (Integer)theKey % binSize;

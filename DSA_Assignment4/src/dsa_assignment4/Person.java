@@ -10,12 +10,12 @@ public class Person
     private String phoneNumber;
     private int age;
 
-    public static void main(String[] args)
-    {
-        Person naomi = new Person("Naomi", "0220239403", 22);
-        System.out.println(naomi.hashCode());
-        
-    }
+//    public static void main(String[] args)
+//    {
+//        Person naomi = new Person("Naomi", "0220239403", 22);
+//        System.out.println(naomi.hashCode());
+//        
+//    }
     
     public Person()
     {
