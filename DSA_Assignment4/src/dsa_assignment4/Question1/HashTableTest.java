@@ -21,7 +21,7 @@ public class HashTableTest
         Person person9 = new Person("h","hhh",29);
         Person person10 = new Person("i","iii",30);
         
-        HashTableWith ht = new HashTableWith();
+        HashTableWithChaining ht = new HashTableWithChaining();
         ht.add(person1.hashCode(), person1.getName());
         ht.add(person2.hashCode(), person2.getName());
         ht.add(person3.hashCode(), person3.getName());
