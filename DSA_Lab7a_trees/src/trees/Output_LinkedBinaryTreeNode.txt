@@ -1,0 +1,7 @@
+run:
+Original Tree: A[B[null,D[F,G]],C[E,null]]
+Original Tree: 2nd Tier: B[null,D[F,G]] and C[E,null]
+Modified Tree: A[B[null,D[F,G]],null]
+Modified Tree: C[E,null]
+Added to B: A[B[C[E,null],D[F,G]],null]
+BUILD SUCCESSFUL (total time: 0 seconds)
