@@ -23,7 +23,7 @@ public class ArrayHeap<E> implements HeapADT<E>
     {
         this.comparator = comparator;
         numElements = 0;
-        elements = (E[]) (new Object[INITIAL_CAPACITY]);//unchecked
+        elements = (E[]) (new Object[INITIAL_CAPACITY]);
     }
     
     public ArrayHeap(Collection<? extends E> c, Comparator<? super E> comparator)
@@ -49,7 +49,7 @@ public class ArrayHeap<E> implements HeapADT<E>
     //handle another level of the heap
     public void expandCapacity()
     {
-        E[] largerArray = (E[]) (new Object[elements.length*2 + 1]);//unchecked
+        E[] largerArray = (E[]) (new Object[elements.length*2 + 1]);
         //copy the elements array to the largerArray
         for(int i = 0; i < numElements; i++)
             largerArray[i] = elements[i];
